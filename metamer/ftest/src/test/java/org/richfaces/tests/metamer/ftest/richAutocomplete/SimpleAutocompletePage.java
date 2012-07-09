@@ -34,7 +34,7 @@ public class SimpleAutocompletePage {
     @FindBy(css="span[id$=autocomplete]")
     public WebElement autocomplete;
 
-    @FindBy(css="input[id$=autocompleteInput]")
+    @FindBy(css="input[id$=autocompleteInput]" )
     public WebElement autocompleteInput;
 
     @FindBy(css="div[id$=autocompleteItems]")
