@@ -35,6 +35,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.test.selenium.support.pagefactory.StaleReferenceAwareFieldDecorator;
 import org.jboss.test.selenium.support.ui.ElementDisplayed;
@@ -351,5 +352,13 @@ public abstract class AbstractWebDriverTest extends AbstractMetamerTest {
             afterAction();
             return o;
         }
+    }
+
+    /**
+     * Some backing beans are not ViewScoped and then need tidy-up
+     * after every test method executed
+     */
+    public void deleteCookies() {
+        driver.manage().deleteCookieNamed("JSESSIONID");
     }
 }

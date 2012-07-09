@@ -51,7 +51,7 @@ public class Autocomplete implements Model {
 
 AjaxSelenium selenium = AjaxSeleniumContext.getProxy();
 
-    JQueryLocator input = pjq("input.rf-au-inp[id$=autocompleteInput]");
+    JQueryLocator input = pjq("input.rf-au-inp");
 
     JQueryLocator items = jq("div.rf-au-lst-cord[id$=autocompleteList] div[id$=autocompleteItems]");
     JQueryLocator selection = items.getDescendant(jq("div.rf-au-itm-sel"));
@@ -65,6 +65,13 @@ AjaxSelenium selenium = AjaxSeleniumContext.getProxy();
             selenium.keyPress(input, keys.charAt(i));
             selenium.fireEvent(input, Event.KEYDOWN);
         }
+    }
+
+    public void typeKeys2(String keys) {
+        selenium.typeKeys(input, keys);
+        selenium.fireEvent(input, Event.KEYPRESS);
+        selenium.fireEvent(input, Event.KEYDOWN);
+        selenium.fireEvent(input, Event.KEYUP);
     }
 
     public void type(String value) {
