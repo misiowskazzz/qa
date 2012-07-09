@@ -121,7 +121,7 @@ public class TestAutocompleteFormatting extends AbstractGrapheneTest {
         autocompleteAttributes.set(AutocompleteAttributes.layout, layout);
 
         autocomplete.clearInputValue();
-        autocomplete.typeKeys("Co");
+        autocomplete.typeKeys2("Co");
         waitFor(2000);
 
         assertTrue(selenium.isElementPresent(suggestionLocatorFormat.format("Colorado")));
@@ -144,7 +144,15 @@ public class TestAutocompleteFormatting extends AbstractGrapheneTest {
             assertEquals(autocomplete.getSelectedOptionIndex(), getExpectedSelectedOptionIndex());
         }
     }
-
+/*
+    public void typePrefix2(String wholeInput) {
+        partialInput = new StringBuilder(autocomplete.getInputText());
+        guardXhr(autocomplete).typeKeys2(wholeInput);
+        assertEquals(autocomplete.getInputText(), getExpectedStateForPrefix());
+        assertEquals(autocomplete.getSelectedOptionIndex(), getExpectedSelectedOptionIndex());
+        partialInput = new StringBuilder(autocomplete.getInputText());
+    }
+*/
     public String getExpectedStateForPrefix() {
         if (selectFirst && autofill && partialInput.length() > 0) {
             return getStatesByPrefix(partialInput.toString()).get(0).toLowerCase();

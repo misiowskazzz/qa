@@ -61,7 +61,7 @@ public class TestAutocompleteAttributes extends AbstractAutocompleteTest {
         String eventValue = "blur event";
         autocompleteAttributes.set(AutocompleteAttributes.onblur, "metamerEvents += \"" + eventValue + "\"");
         selenium.click(autocompleteInput);
-        autocomplete.typeKeys2("\t");
+        autocomplete.typeKeys("\t");
         waitGui.failWith("Attribute onblur does not work correctly").until(new EventFiredCondition(Event.BLUR));
     }
 
@@ -69,7 +69,7 @@ public class TestAutocompleteAttributes extends AbstractAutocompleteTest {
     public void testOnchange() {
         String eventValue = "change event";
         autocompleteAttributes.set(AutocompleteAttributes.onchange, "metamerEvents += \"" + eventValue + "\"");
-        autocomplete.typeKeys2("alabama");
+        autocomplete.typeKeys("alabama");
         selenium.fireEvent(autocompleteInput, Event.BLUR);
         waitGui.failWith("Attribute onblur does not work correctly").until(new EventFiredCondition(Event.CHANGE));
     }
@@ -235,7 +235,7 @@ public class TestAutocompleteAttributes extends AbstractAutocompleteTest {
         guardHttp(selenium).type(eventInput, value);
 
         // before perform action on list, need display suggestions
-        autocomplete.typeKeys2("ala");
+        autocomplete.typeKeys("ala");
         waitGui.until(ElementPresent.getInstance().locator(element));
         selenium.fireEvent(element, event);
 

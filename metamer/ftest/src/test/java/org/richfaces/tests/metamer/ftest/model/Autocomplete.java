@@ -60,18 +60,24 @@ AjaxSelenium selenium = AjaxSeleniumContext.getProxy();
 
     public void typeKeys(String keys) {
         for (int i = 0; i < keys.length(); i++) {
-            //final String key = String.valueOf(keys.charAt(i));
             selenium.focus(input);
             selenium.keyPress(input, keys.charAt(i));
-            selenium.fireEvent(input, Event.KEYDOWN);
+            selenium.fireEvent(input, Event.KEYPRESS);
+            selenium.fireEvent(input, Event.KEYUP);
         }
+    }
+
+    public void typeKey(String key) {
+        selenium.type(input, key);
+        selenium.fireEvent(input, Event.KEYPRESS);
+        selenium.fireEvent(input, Event.KEYUP);
     }
 
     public void typeKeys2(String keys) {
         selenium.typeKeys(input, keys);
         selenium.fireEvent(input, Event.KEYPRESS);
-        selenium.fireEvent(input, Event.KEYDOWN);
-        selenium.fireEvent(input, Event.KEYUP);
+        //selenium.fireEvent(input, Event.KEYDOWN);
+        //selenium.fireEvent(input, Event.KEYUP);
     }
 
     public void type(String value) {

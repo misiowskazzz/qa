@@ -130,7 +130,7 @@ public class TestAutocompleteByKeys extends AbstractAutocompleteTest {
         for (int i = 0; i < wholeInput.length(); i++) {
             String chr = String.valueOf(wholeInput.charAt(i));
 
-            guardXhr(getAutocomplete()).typeKeys(chr);
+            guardXhr(getAutocomplete()).typeKeys2(chr);
             partialInput.append(chr);
 
             assertEquals(getAutocomplete().getInputText(), getExpectedStateForPrefix());
