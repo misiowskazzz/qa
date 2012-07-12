@@ -32,6 +32,7 @@ import org.jboss.test.selenium.support.ui.AttributeContains;
 import org.jboss.test.selenium.support.ui.ElementDisplayed;
 import org.jboss.test.selenium.support.ui.ElementNotDisplayed;
 import org.jboss.test.selenium.support.ui.ElementNotPresent;
+import org.jboss.test.selenium.support.ui.ElementPresent;
 import org.jboss.test.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -57,7 +58,6 @@ public class TestAutocompleteAttributes2 extends AbstractWebDriverTest {
     ElementNotDisplayed notDisplayed = ElementNotDisplayed.getInstance();
     ElementNotPresent notPresent = ElementNotPresent.getInstance();
     Actions actions;
-    Actions mouseActions;
 
     @Override
     public URL getTestUrl() {
@@ -163,9 +163,8 @@ public class TestAutocompleteAttributes2 extends AbstractWebDriverTest {
         autocompleteAttributes.set(AutocompleteAttributes.onclick, "metamerEvents += \"" + testedValue + " \"");
         executeJS("window.metamerEvents = \"\";");
 
-        actions = actions.click(page.autocompleteInput);
-        Action click = actions.build();
-        click.perform();
+        new WebDriverWait(driver, 500).until(ElementPresent.getInstance().element(page.autocompleteInput));
+        actions.click(page.autocompleteInput).build().perform();
 
         String event = expectedReturnJS("return window.metamerEvents", testedValue);
         autocompleteAttributes.reset(AutocompleteAttributes.onclick);
@@ -190,14 +189,7 @@ public class TestAutocompleteAttributes2 extends AbstractWebDriverTest {
         autocompleteAttributes.set(AutocompleteAttributes.ondblclick, "metamerEvents += \"" + testedValue + " \"");
         executeJS("window.metamerEvents = \"\";");
 
-        // WebElement element = driver.findElement(By.name("source"));
-        // WebElement target = driver.findElement(By.name("target"));
-
-        // (new Actions(driver)).dragAndDrop(element, target).perform();
-
-        actions.doubleClick(page.autocompleteInput);
-        Action dblClick = actions.build();
-        dblClick.perform();
+        actions.doubleClick(page.autocompleteInput).build().perform();
 
         String event = expectedReturnJS("return window.metamerEvents", testedValue);
         autocompleteAttributes.reset(AutocompleteAttributes.ondblclick);
@@ -220,9 +212,7 @@ public class TestAutocompleteAttributes2 extends AbstractWebDriverTest {
         autocompleteAttributes.set(AutocompleteAttributes.onfocus, "metamerEvents += \"" + testedValue + " \"");
         executeJS("window.metamerEvents = \"\";");
 
-        actions = actions.click(page.autocompleteInput);
-        Action click = actions.build();
-        click.perform();
+        actions.click(page.autocompleteInput).build().perform();
 
         String event = expectedReturnJS("return window.metamerEvents", testedValue);
         autocompleteAttributes.reset(AutocompleteAttributes.onfocus);
@@ -235,12 +225,24 @@ public class TestAutocompleteAttributes2 extends AbstractWebDriverTest {
         autocompleteAttributes.set(AutocompleteAttributes.onkeydown, "metamerEvents += \"" + testedValue + " \"");
         executeJS("window.metamerEvents = \"\";");
 
-        actions = actions.keyDown(page.autocompleteInput, Keys.ARROW_DOWN);
-        actions.build().perform();
+        actions.keyDown(page.autocompleteInput, Keys.ALT).build().perform();
 
         String event = expectedReturnJS("return window.metamerEvents", testedValue);
         autocompleteAttributes.reset(AutocompleteAttributes.onkeydown);
         assertEquals(event, testedValue, "Attribute onkeydown doesn't work");
+    }
+
+    @Test
+    public void testOnKeyUp() {
+        String testedValue = "KeyUp event";
+        autocompleteAttributes.set(AutocompleteAttributes.onkeyup, "metamerEvents += \"" + testedValue + " \"");
+        executeJS("window.metamerEvents = \"\";");
+
+        actions.keyUp(page.autocompleteInput, Keys.ALT).build().perform();
+
+        String event = expectedReturnJS("return window.metamerEvents", testedValue);
+        autocompleteAttributes.reset(AutocompleteAttributes.onkeyup);
+        assertEquals(event, testedValue, "Attribute onkeyup doesn't work");
     }
 
     @Test
@@ -249,8 +251,7 @@ public class TestAutocompleteAttributes2 extends AbstractWebDriverTest {
         autocompleteAttributes.set(AutocompleteAttributes.onmousedown, "metamerEvents += \"" + testedValue + " \"");
         executeJS("window.metamerEvents = \"\";");
 
-        actions = actions.moveToElement(page.autocompleteInput).clickAndHold();
-        actions.build().perform();
+        actions.clickAndHold(page.autocompleteInput).build().perform();
 
         String event = expectedReturnJS("return window.metamerEvents", testedValue);
         autocompleteAttributes.reset(AutocompleteAttributes.onmousedown);
@@ -263,8 +264,7 @@ public class TestAutocompleteAttributes2 extends AbstractWebDriverTest {
         autocompleteAttributes.set(AutocompleteAttributes.onmousemove, "metamerEvents += \"" + testedValue + " \"");
         executeJS("window.metamerEvents = \"\";");
 
-        actions = actions.moveToElement(page.autocompleteInput).moveByOffset(3, 3);
-        actions.build().perform();
+        actions.moveToElement(page.autocompleteInput).build().perform();
 
         String event = expectedReturnJS("return window.metamerEvents", testedValue);
         autocompleteAttributes.reset(AutocompleteAttributes.onmousemove);
@@ -277,9 +277,9 @@ public class TestAutocompleteAttributes2 extends AbstractWebDriverTest {
         autocompleteAttributes.set(AutocompleteAttributes.onmouseout, "metamerEvents += \"" + testedValue + " \"");
         executeJS("window.metamerEvents = \"\";");
 
-        // length of autocomplete input should be less than 150px, so move right 150px should be off
-        actions = actions.moveToElement(page.autocompleteInput).moveByOffset(150, 50);
-        actions.build().perform();
+        Dimension dim = page.autocompleteInput.getSize();
+        actions.moveToElement(page.autocompleteInput)
+            .moveByOffset(-dim.getWidth()/2 - 3, dim.getHeight()/2 + 3).build().perform();
 
         String event = expectedReturnJS("return window.metamerEvents", testedValue);
         autocompleteAttributes.reset(AutocompleteAttributes.onmouseout);
@@ -292,11 +292,7 @@ public class TestAutocompleteAttributes2 extends AbstractWebDriverTest {
         autocompleteAttributes.set(AutocompleteAttributes.onmouseover, "metamerEvents += \"" + testedValue + " \"");
         executeJS("window.metamerEvents = \"\";");
 
-        Dimension autocompleteInput = page.autocompleteInput.getSize();
-        int x = autocompleteInput.getWidth()/2;
-        int y = autocompleteInput.getHeight()/2;
-        actions = actions.moveToElement(page.autocompleteInput, - x - 1, -y - 1 ).moveByOffset(x, y);
-        actions.build().perform();
+        actions.moveToElement(page.autocompleteInput, 3, 3 ).build().perform();
 
         String event = expectedReturnJS("return window.metamerEvents", testedValue);
         autocompleteAttributes.reset(AutocompleteAttributes.onmouseover);
@@ -309,8 +305,7 @@ public class TestAutocompleteAttributes2 extends AbstractWebDriverTest {
         autocompleteAttributes.reset(AutocompleteAttributes.onmouseup);
         executeJS("window.metamerEvents = \"\";");
 
-        actions = actions.moveToElement(page.autocompleteInput).click();
-        actions.build().perform();
+        actions.moveToElement(page.autocompleteInput, -3, 3).clickAndHold().release().build().perform();
 
         String event = expectedReturnJS("return window.metamerEvents", testedValue);
         assertEquals(event, testedValue, "Attribute onmouseup doesn't work");
