@@ -7,6 +7,7 @@
                 <exclude name="4.3" />
                 <exclude name="4.Future" />
                 <exclude name="extended" />
+                <exclude name="screenshots" />
             </run>
         </groups>
 

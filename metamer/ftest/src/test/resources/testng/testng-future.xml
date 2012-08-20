@@ -6,6 +6,7 @@
             <run>
                 <include name="arquillian" />
                 <include name="4.Future" />
+                <exclude name="screenshots" />
             </run>
         </groups>
 
