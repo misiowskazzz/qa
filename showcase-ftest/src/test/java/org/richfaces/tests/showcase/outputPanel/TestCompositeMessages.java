@@ -27,16 +27,12 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
-import org.jboss.arquillian.ajocado.ajaxaware.AjaxAwareInterceptor;
 import org.jboss.arquillian.ajocado.locator.JQueryLocator;
-import org.jboss.arquillian.ajocado.utils.URLUtils;
 import org.richfaces.tests.showcase.AbstractGrapheneTest;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:jhuska@redhat.com">Juraj Huska</a>
- * @version $Revision$
  */
 public class TestCompositeMessages extends AbstractGrapheneTest {
 
@@ -66,13 +62,13 @@ public class TestCompositeMessages extends AbstractGrapheneTest {
     private final int LENGTH_OF_ADDRESS_CORRECT_BOTTOM_BORDER_VALUE = 1;
     private final int LENGTH_OF_ADDRESS_CORRECT_UPPER_BORDER_VALUE = 100;
 
-    public static final String ERROR_MESSAGE_NAME_LENGTH_TOO_SHORT_BUT_NOT_EMPTY = "Name: Validation Error: Value is less than allowable minimum of '3'";
+    public static final String ERROR_MESSAGE_NAME_LENGTH_TOO_SHORT_BUT_NOT_EMPTY = "Name: Validation Error: Length is less than allowable minimum of '3'";
 
-    public static final String ERROR_MESSAGE_NAME_TOO_LONG = "Name: Validation Error: Value is greater than allowable maximum of '12'";
+    public static final String ERROR_MESSAGE_NAME_TOO_LONG = "Name: Validation Error: Length is greater than allowable maximum of '12'";
 
     public static final String ERROR_MESSAGE_NAME_EMPTY = "Name: Validation Error: Value is required.";
 
-    public static final String ERROR_MESSAGE_ADDRESS_TOO_LONG = "Address: Validation Error: Value is greater than allowable maximum of '100'";
+    public static final String ERROR_MESSAGE_ADDRESS_TOO_LONG = "Address: Validation Error: Length is greater than allowable maximum of '100'";
 
     public static final String ERROR_MESSAGE_ADDRESS_EMPTY = "Address: Validation Error: Value is required.";
 
@@ -96,7 +92,7 @@ public class TestCompositeMessages extends AbstractGrapheneTest {
 
     }
 
-    @Test(groups = { "4.Future" })
+    @Test
     public void testUserNameFilledIncorrectlyMoreThan12() {
 
         prepareStringBuildersClickOnTheButton(LENGTH_OF_USER_NAME_WRONG_TOO_LONG, LENGTH_OF_ADDRESS_CORRECT_MIDDLE_VALUE);
@@ -112,7 +108,7 @@ public class TestCompositeMessages extends AbstractGrapheneTest {
         isUserSuccessfullyAddedPresent(false);
     }
 
-    @Test(groups = { "4.Future" })
+    @Test
     public void testUserNameFilledIncorrectlyLessThan3MoreThan0() {
 
         prepareStringBuildersClickOnTheButton(LENGTH_OF_USER_NAME_WRONG_LESS_THAN_MINIMAL,
@@ -161,7 +157,7 @@ public class TestCompositeMessages extends AbstractGrapheneTest {
         isUserSuccessfullyAddedPresent(false);
     }
 
-    @Test(groups = { "4.Future" })
+    @Test
     public void testAddressFilledIncorrectlyLengthMoreThan100() {
 
         prepareStringBuildersClickOnTheButton(LENGTH_OF_USER_NAME_CORRECT_MIDDLE_VALUE, LENGTH_OF_ADDRESS_WRONG_TOO_LONG);
@@ -177,7 +173,7 @@ public class TestCompositeMessages extends AbstractGrapheneTest {
         isUserSuccessfullyAddedPresent(false);
     }
 
-    @Test(groups = { "4.Future" })
+    @Test
     public void testNameIncorrectlyMoreThan12AddressIncorrectlyLength0() {
 
         prepareStringBuildersClickOnTheButton(LENGTH_OF_USER_NAME_WRONG_TOO_LONG, LENGTH_OF_ADDRESS_WRONG_EMPTY);
@@ -195,7 +191,7 @@ public class TestCompositeMessages extends AbstractGrapheneTest {
         isUserSuccessfullyAddedPresent(false);
     }
 
-    @Test(groups = { "4.Future" })
+    @Test
     public void testNameIncorrectlyMoreThan12AddressIncorrectlyMoreThan100() {
 
         prepareStringBuildersClickOnTheButton(LENGTH_OF_USER_NAME_WRONG_TOO_LONG, LENGTH_OF_ADDRESS_WRONG_TOO_LONG);
@@ -213,7 +209,7 @@ public class TestCompositeMessages extends AbstractGrapheneTest {
         isUserSuccessfullyAddedPresent(false);
     }
 
-    @Test(groups = { "4.Future" })
+    @Test
     public void testNameIncorrectlyLessThan3MoreThan0AddressIncorrectlyLength0() {
 
         prepareStringBuildersClickOnTheButton(LENGTH_OF_USER_NAME_WRONG_LESS_THAN_MINIMAL, LENGTH_OF_ADDRESS_WRONG_EMPTY);
@@ -231,7 +227,7 @@ public class TestCompositeMessages extends AbstractGrapheneTest {
         isUserSuccessfullyAddedPresent(false);
     }
 
-    @Test(groups = { "4.Future" })
+    @Test
     public void testNameIncorrectlyLessThan3MoreThan0AddressIncorrectlyMoreThan100() {
 
         prepareStringBuildersClickOnTheButton(LENGTH_OF_USER_NAME_WRONG_LESS_THAN_MINIMAL, LENGTH_OF_ADDRESS_WRONG_TOO_LONG);
@@ -267,7 +263,7 @@ public class TestCompositeMessages extends AbstractGrapheneTest {
         isUserSuccessfullyAddedPresent(false);
     }
 
-    @Test(groups = { "4.Future" })
+    @Test
     public void testNameIncorrectlyLength0AddressIncorrectlyMoreThan100() {
 
         prepareStringBuildersClickOnTheButton(LENGTH_OF_USER_NAME_WRONG_EMPTY, LENGTH_OF_ADDRESS_WRONG_TOO_LONG);

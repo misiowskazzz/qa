@@ -24,9 +24,7 @@ package org.richfaces.tests.metamer.ftest.richGraphValidator;
 import static org.jboss.arquillian.ajocado.Graphene.elementNotPresent;
 import static org.jboss.arquillian.ajocado.Graphene.textEquals;
 import static org.jboss.arquillian.ajocado.Graphene.waitGui;
-
 import static org.jboss.arquillian.ajocado.utils.URLUtils.buildUrl;
-
 import static org.jboss.test.selenium.locator.utils.LocatorEscaping.jq;
 import static org.richfaces.tests.metamer.ftest.attributes.AttributeList.graphValidatorAttributes;
 import static org.richfaces.tests.metamer.ftest.richGraphValidator.GraphValidatorAttributes.groups;

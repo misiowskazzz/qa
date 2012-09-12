@@ -106,6 +106,8 @@ import org.testng.annotations.Test;
  */
 public class TestRichCalendarAttributes extends AbstractCalendarTest {
 
+    private final int OFFSET_TOLERANCE = 2;
+
     @Override
     public URL getTestUrl() {
         return buildUrl(contextPath, "faces/components/richCalendar/simple.xhtml");
@@ -286,9 +288,9 @@ public class TestRichCalendarAttributes extends AbstractCalendarTest {
         assertEquals(selenium.getText(message), "conversion error");
     }
 
-    @Test
+    // @Test
     public void testCurrentDate () {
-        // TODO JJamrich 2012-02-10
+        // Not sure what exactly is this attribute supposed to manage
     }
 
     @Test
@@ -403,30 +405,30 @@ public class TestRichCalendarAttributes extends AbstractCalendarTest {
 
             switch (i) {
                 case 0: // auto (direction depends on browser/screen resolution)
-                    assertTrue(tolerantEquals(popupX, offsetXOnTheLeft, 1) || tolerantEquals(popupX, offsetXOnTheRight, 1),
+                    assertTrue(tolerantEquals(popupX, offsetXOnTheLeft, OFFSET_TOLERANCE) || tolerantEquals(popupX, offsetXOnTheRight, OFFSET_TOLERANCE),
                         "Any expected value found. x = " + popupX + ", expected one of : " + offsetXOnTheLeft + ", " + offsetXOnTheRight + "; @direction is set to <" + directions[i] + ">.");
-                    assertTrue(tolerantEquals(popupY, offsetYOnTheBottom, 1) || tolerantEquals(popupY, offsetYOnTheTop, 1),
+                    assertTrue(tolerantEquals(popupY, offsetYOnTheBottom, OFFSET_TOLERANCE) || tolerantEquals(popupY, offsetYOnTheTop, OFFSET_TOLERANCE),
                         "Any expected value found. y = " + popupY + ", expected one of: " + offsetYOnTheBottom + ", " + offsetYOnTheTop + "; @direction is set to <" + directions[i] + ">.");
                     break;
 
                 case 1: // bottomLeft
-                    tolerantAssertEquals(popupX, offsetXOnTheLeft, 1, "Horizontal position doesn't match, expected <" + popupX + ">, found <" + offsetXOnTheLeft + ">. Tolerance is set to <" + 1 + ">; @direction is set to <" + directions[i] + ">.");
-                    tolerantAssertEquals(popupY, offsetYOnTheBottom, 1, "Vertical position doesn't match, expected <" + popupY + ">, found <" + offsetYOnTheBottom + ">. Tolerance is set to <" + 1 + ">; @direction is set to <" + directions[i] + ">");
+                    tolerantAssertEquals(popupX, offsetXOnTheLeft, OFFSET_TOLERANCE, "Horizontal position doesn't match, expected <" + popupX + ">, found <" + offsetXOnTheLeft + ">. Tolerance is set to <" + OFFSET_TOLERANCE + ">; @direction is set to <" + directions[i] + ">.");
+                    tolerantAssertEquals(popupY, offsetYOnTheBottom, OFFSET_TOLERANCE, "Vertical position doesn't match, expected <" + popupY + ">, found <" + offsetYOnTheBottom + ">. Tolerance is set to <" + OFFSET_TOLERANCE + ">; @direction is set to <" + directions[i] + ">");
                     break;
 
                 case 2: // bottomRight
-                    tolerantAssertEquals(popupX, offsetXOnTheRight, 1, "Horizontal position doesn't match, expected <" + popupX + ">, found <" + offsetXOnTheRight + ">. Tolerance is set to <" + 1 + ">; @direction is set to <" + directions[i] + ">.");
-                    tolerantAssertEquals(popupY, offsetYOnTheBottom, 1, "Vertical position doesn't match, expected <" + popupY + ">, found <" + offsetYOnTheBottom + ">. Tolerance is set to <" + 1 + ">; @direction is set to <" + directions[i] + ">.");
+                    tolerantAssertEquals(popupX, offsetXOnTheRight, OFFSET_TOLERANCE, "Horizontal position doesn't match, expected <" + popupX + ">, found <" + offsetXOnTheRight + ">. Tolerance is set to <" + OFFSET_TOLERANCE + ">; @direction is set to <" + directions[i] + ">.");
+                    tolerantAssertEquals(popupY, offsetYOnTheBottom, OFFSET_TOLERANCE, "Vertical position doesn't match, expected <" + popupY + ">, found <" + offsetYOnTheBottom + ">. Tolerance is set to <" + OFFSET_TOLERANCE + ">; @direction is set to <" + directions[i] + ">.");
                     break;
 
                 case 3: // topLeft
-                    tolerantAssertEquals(popupX, offsetXOnTheLeft, 1, "Horizontal position doesn't match, expected <" + popupX + ">, found <" + offsetXOnTheLeft + ">. Tolerance is set to <" + 1 + ">; @direction is set to <" + directions[i] + ">.");
-                    tolerantAssertEquals(popupY, offsetYOnTheTop, 1, "Vertical position doesn't match, expected <" + popupY + ">, found <" + offsetYOnTheTop + ">. Tolerance is set to <" + 1 + ">; @direction is set to <" + directions[i] + ">.");
+                    tolerantAssertEquals(popupX, offsetXOnTheLeft, OFFSET_TOLERANCE, "Horizontal position doesn't match, expected <" + popupX + ">, found <" + offsetXOnTheLeft + ">. Tolerance is set to <" + OFFSET_TOLERANCE + ">; @direction is set to <" + directions[i] + ">.");
+                    tolerantAssertEquals(popupY, offsetYOnTheTop, OFFSET_TOLERANCE, "Vertical position doesn't match, expected <" + popupY + ">, found <" + offsetYOnTheTop + ">. Tolerance is set to <" + OFFSET_TOLERANCE + ">; @direction is set to <" + directions[i] + ">.");
                     break;
 
                 case 4: // topRight
-                    tolerantAssertEquals(popupX, offsetXOnTheRight, 1,"Horizontal position doesn't match, expected <" + popupX + ">, found <" + offsetXOnTheRight + ">. Tolerance is set to <" + 1 + ">; @direction is set to <" + directions[i] + ">.");
-                    tolerantAssertEquals(popupY, offsetYOnTheTop, 1, "Vertical position doesn't match, expected <" + popupY + ">, found <" + offsetYOnTheTop + ">. Tolerance is set to <" + 1 + ">; @direction is set to <" + directions[i] + ">.");
+                    tolerantAssertEquals(popupX, offsetXOnTheRight, OFFSET_TOLERANCE,"Horizontal position doesn't match, expected <" + popupX + ">, found <" + offsetXOnTheRight + ">. Tolerance is set to <" + OFFSET_TOLERANCE + ">; @direction is set to <" + directions[i] + ">.");
+                    tolerantAssertEquals(popupY, offsetYOnTheTop, OFFSET_TOLERANCE, "Vertical position doesn't match, expected <" + popupY + ">, found <" + offsetYOnTheTop + ">. Tolerance is set to <" + OFFSET_TOLERANCE + ">; @direction is set to <" + directions[i] + ">.");
                     break;
 
                 default:
@@ -997,8 +999,8 @@ public class TestRichCalendarAttributes extends AbstractCalendarTest {
         testHtmlAttribute(input, "tabindex", "99");
     }
 
-    @Test(groups = { "4.3" })
-    @IssueTracking("https://issues.jboss.org/browse/RF-10980")
+    @Test
+    @RegressionTest("https://issues.jboss.org/browse/RF-10980")
     @Templates(value = "richPopupPanel")
     public void testTabindexInputInPopupPanel() {
         testHtmlAttribute(input, "tabindex", "99");

@@ -8,13 +8,14 @@
     General Public License for more details. You should have received a copy of the GNU Lesser General Public License along with this
     software; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA, or see the
     FSF site: http://www.fsf.org. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.richfaces.tests</groupId>
     <artifactId>richfaces-qa-parent</artifactId>
-    <version>4.2.2-SNAPSHOT</version>
+    <version>4.3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>RichFaces QA Parent</name>
@@ -29,7 +30,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <version.richfaces>4.2.2.Final</version.richfaces>
+        <version.richfaces>4.3.0-SNAPSHOT</version.richfaces>
         <richfaces.checkstyle.version>5</richfaces.checkstyle.version>
 
         <!-- version of JBoss containers to use and download -->
@@ -37,29 +38,39 @@
         <version.jbossas7>7.0.2.Final</version.jbossas7>
         <version.jbossas7-1>7.1.1.Final</version.jbossas7-1>
 
+        <!-- version of Glassfish containers to use and download       -->
+        <version.glassfish3-1>3.1.2</version.glassfish3-1>
+
         <!-- version of Tomcat containers to use-->
         <version.tomcat6>6.0.35</version.tomcat6>
-        <version.tomcat7>7.0.26</version.tomcat7>
+        <version.tomcat7>7.0.29</version.tomcat7>
         <tomcat6Zip>path/to/your/tomcat/distribution/zip</tomcat6Zip>
         <tomcat7Zip>path/to/your/tomcat/distribution/zip</tomcat7Zip>
 
+        <!-- versions of TomEE containers to use and download -->
+        <version.tomee1-1>1.1.0-SNAPSHOT</version.tomee1-1>
+
         <!-- arquillian versions -->
-        <arquillian.bom.version>1.0.1.Final</arquillian.bom.version>
+        <arquillian.bom.version>1.0.2.Final</arquillian.bom.version>
         <arquillian.tomcat.version>1.0.0.CR3</arquillian.tomcat.version>
-        <arquillian.drone.version>1.0.0.Final</arquillian.drone.version>
-        <arquillian.graphene-testng.version>1.0.0.Final</arquillian.graphene-testng.version>
-        <arquillian.graphene-webdriver.version>2.0.0.Alpha1</arquillian.graphene-webdriver.version>
+        <arquillian.drone.version>1.1.0.CR3</arquillian.drone.version>
+        <arquillian.graphene-testng.version>2.0.0-SNAPSHOT</arquillian.graphene-testng.version>
+        <arquillian.graphene-webdriver.version>2.0.0-SNAPSHOT</arquillian.graphene-webdriver.version>
         <arquillian.jboss-as6.version>1.0.0.CR3</arquillian.jboss-as6.version>
         <arquillian.openshift-express>1.0.0.Beta1</arquillian.openshift-express>
+        <arquillian.android.version>1.0.0.Alpha1</arquillian.android.version>
         <shrinkwrap.descriptors.version>1.1.0-beta-1</shrinkwrap.descriptors.version>
+        <version.shrinkwrap.descriptor>2.0.0-alpha-3</version.shrinkwrap.descriptor>
+<!--         <shrinkwrap.descriptors.javaee.version>2.0.0-alpha-3</shrinkwrap.descriptors.javaee.version> -->
 
-        <version.selenium>2.24.1</version.selenium>
-        <version.selenium.server>2.24.1</version.selenium.server>
+        <version.selenium>2.25.0</version.selenium>
+        <version.selenium.server>2.25.0</version.selenium.server>
+        <version.opera.driver>0.18</version.opera.driver>
         <version.slf4j.jbossas6>1.6.1</version.slf4j.jbossas6>
 
-        <version.jacoco.plugin>0.5.6.201201232323</version.jacoco.plugin>
-
         <!-- these are set as Environmental variables to let Arquillian know where distribution of managed containers are -->
+        <glassfish3-1home>${project.build.directory}/glassfish3</glassfish3-1home>
+
         <tomcat6.home>${project.build.directory}/apache-tomcat-${version.tomcat6}</tomcat6.home>
         <tomcat7.home>${project.build.directory}/apache-tomcat-${version.tomcat7}</tomcat7.home>
 
@@ -68,7 +79,7 @@
         <jboss6Home>${project.build.directory}/jboss-${version.jbossas6}</jboss6Home>
 
         <showcase.classifier>jbas7</showcase.classifier>
-        <metamer.classifier>jee6</metamer.classifier>
+        <metamer.classifier>jbas71</metamer.classifier>
 
         <openshift.password />
         <openshift.namespace>richfacesqa</openshift.namespace>
@@ -96,15 +107,15 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>2.4</version>
+                    <version>2.5</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.12</version>
+                    <version>2.12.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.3.1</version>
+                    <version>2.3.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-antrun-plugin</artifactId>
@@ -112,11 +123,11 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>2.5</version>
+                    <version>2.6</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>1.1</version>
+                    <version>1.1.1</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-war-plugin</artifactId>
@@ -128,7 +139,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>2.1.2</version>
+                    <version>2.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -172,11 +183,6 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>buildnumber-maven-plugin</artifactId>
                     <version>1.1</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${version.jacoco.plugin}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -328,6 +334,7 @@
         <connection>scm:git:git://github.com/richfaces/qa.git</connection>
         <developerConnection>scm:git:git@github.com:richfaces/qa.git</developerConnection>
         <url>https://github.com/richfaces/qa</url>
+        <tag>HEAD</tag>
     </scm>
 
     <dependencyManagement>
@@ -353,6 +360,13 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-android-depchain</artifactId>
+                <version>${arquillian.android.version}</version>
+                <type>pom</type>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.jboss.shrinkwrap.descriptors</groupId>
                 <artifactId>shrinkwrap-descriptors-api</artifactId>
                 <version>${shrinkwrap.descriptors.version}</version>
@@ -361,6 +375,17 @@
                 <groupId>org.jboss.shrinkwrap.descriptors</groupId>
                 <artifactId>shrinkwrap-descriptors-impl</artifactId>
                 <version>${shrinkwrap.descriptors.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.shrinkwrap.descriptors</groupId>
+                <artifactId>shrinkwrap-descriptors-impl-javaee</artifactId>
+                <version>${version.shrinkwrap.descriptor}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.shrinkwrap.descriptors</groupId>
+                <artifactId>shrinkwrap-descriptors-api-base</artifactId>
+                <version>${version.shrinkwrap.descriptor}</version>
             </dependency>
 
             <!-- Selenium Server -->
@@ -429,14 +454,121 @@
                 <version>${arquillian.graphene-webdriver.version}</version>
                 <type>pom</type>
             </dependency>
+            <dependency>
+                <groupId>com.opera</groupId>
+                <artifactId>operadriver</artifactId>
+                <version>${version.opera.driver}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <profiles>
         <profile>
+            <id>tomee-remote-1-1</id>
+            <properties>
+                <metamer.classifier>tomee11</metamer.classifier>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.openejb</groupId>
+                    <artifactId>arquillian-tomee-remote</artifactId>
+                    <version>${version.tomee1-1}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unpack</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.apache.openejb</groupId>
+                                            <artifactId>apache-tomee</artifactId>
+                                            <version>${version.tomee1-1}</version>
+                                            <classifier>webprofile</classifier>
+                                            <type>zip</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${project.build.directory}</outputDirectory>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <systemProperties>
+                                <arquillian.launch>tomee-remote-1-1</arquillian.launch>
+                            </systemProperties>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>glassfish-managed-3-1</id>
+            <properties>
+                <metamer.classifier>glassfish31</metamer.classifier>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.arquillian.container</groupId>
+                    <artifactId>arquillian-glassfish-managed-3.1</artifactId>
+                    <version>1.0.0.CR3</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unpack</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.glassfish.main.distributions</groupId>
+                                            <artifactId>glassfish</artifactId>
+                                            <version>${version.glassfish3-1}</version>
+                                            <type>zip</type>
+                                            <outputDirectory>${project.build.directory}</outputDirectory>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <systemProperties>
+                                <arquillian.launch>glassfish-managed-3-1</arquillian.launch>
+                            </systemProperties>
+                            <environmentVariables>
+                                <GLASSFISH_HOME>${glassfish3-1home}</GLASSFISH_HOME>
+                            </environmentVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>jbossas-managed-6</id>
             <properties>
-                <metamer.classifier>jee6</metamer.classifier>
+                <metamer.classifier>jbas71</metamer.classifier>
                 <showcase.classifier>jee6</showcase.classifier>
             </properties>
             <dependencies>
@@ -454,6 +586,11 @@
                 <dependency>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
+                    <version>${version.slf4j.jbossas6}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
                     <version>${version.slf4j.jbossas6}</version>
                 </dependency>
             </dependencies>
@@ -522,7 +659,7 @@
         <profile>
             <id>jbossas-managed-6-https</id>
             <properties>
-                <metamer.classifier>jee6</metamer.classifier>
+                <metamer.classifier>jbas71</metamer.classifier>
                 <showcase.classifier>jee6</showcase.classifier>
             </properties>
             <dependencies>
@@ -618,7 +755,7 @@
         <profile>
             <id>jbossas-managed-7</id>
             <properties>
-                <metamer.classifier>jee6</metamer.classifier>
+                <metamer.classifier>jbas71</metamer.classifier>
                 <showcase.classifier>jbas7</showcase.classifier>
             </properties>
             <dependencies>
@@ -672,7 +809,7 @@
         <profile>
             <id>jbossas-managed-7-1</id>
             <properties>
-                <metamer.classifier>jee6</metamer.classifier>
+                <metamer.classifier>jbas71</metamer.classifier>
                 <showcase.classifier>jbas71</showcase.classifier>
             </properties>
             <dependencies>
@@ -748,7 +885,7 @@
         <profile>
             <id>jbossas-managed-7-1-https</id>
             <properties>
-                <metamer.classifier>jee6</metamer.classifier>
+                <metamer.classifier>jbas71</metamer.classifier>
                 <showcase.classifier>jbas71</showcase.classifier>
             </properties>
             <dependencies>
@@ -841,7 +978,7 @@
         <profile>
             <id>jbossas-remote-7</id>
             <properties>
-                <metamer.classifier>jee6</metamer.classifier>
+                <metamer.classifier>jbas71</metamer.classifier>
                 <showcase.classifier>jbas7</showcase.classifier>
             </properties>
             <dependencies>
@@ -874,7 +1011,7 @@
         <profile>
             <id>jbossas-remote-7-1</id>
             <properties>
-                <metamer.classifier>jee6</metamer.classifier>
+                <metamer.classifier>jbas71</metamer.classifier>
                 <showcase.classifier>jbas71</showcase.classifier>
             </properties>
             <dependencies>
@@ -907,7 +1044,7 @@
         <profile>
             <id>tomcat-managed-6</id>
             <properties>
-                <metamer.classifier>mojarra</metamer.classifier>
+                <metamer.classifier>tomcat7-mojarra</metamer.classifier>
                 <showcase.classifier>tomcat6</showcase.classifier>
             </properties>
             <dependencies>
@@ -974,7 +1111,7 @@
         <profile>
             <id>tomcat-managed-7</id>
             <properties>
-                <metamer.classifier>mojarra</metamer.classifier>
+                <metamer.classifier>tomcat7-mojarra</metamer.classifier>
                 <showcase.classifier>tomcat6</showcase.classifier>
             </properties>
             <dependencies>
@@ -1041,7 +1178,7 @@
         <profile>
             <id>openshift-express</id>
             <properties>
-                <metamer.classifier>jee6</metamer.classifier>
+                <metamer.classifier>jbas71</metamer.classifier>
                 <showcase.classifier>openshift</showcase.classifier>
             </properties>
             <dependencies>

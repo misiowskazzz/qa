@@ -1,25 +1,24 @@
-/**
- * *****************************************************************************
- * JBoss, Home of Professional Open Source Copyright 2010-2012, Red Hat, Inc.
- * and individual contributors by the @authors tag. See the copyright.txt in the
- * distribution for a full listing of individual contributors.
+/*******************************************************************************
+ * JBoss, Home of Professional Open Source
+ * Copyright 2010-2012, Red Hat, Inc. and individual contributors
+ * by the @authors tag. See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
  *
- * This is free software; you can redistribute it and/or modify it under the
- * terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
  *
- * This software is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this software; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA, or see the FSF
- * site: http://www.fsf.org.
- * *****************************************************************************
- */
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ *******************************************************************************/
 package org.richfaces.tests.metamer.ftest;
 
 import static org.jboss.arquillian.ajocado.Graphene.alertPresent;
@@ -29,7 +28,6 @@ import static org.jboss.arquillian.ajocado.Graphene.guardXhr;
 import static org.jboss.arquillian.ajocado.Graphene.id;
 import static org.jboss.arquillian.ajocado.Graphene.jq;
 import static org.jboss.arquillian.ajocado.Graphene.waitGui;
-
 import static org.jboss.arquillian.ajocado.dom.Event.CLICK;
 import static org.jboss.arquillian.ajocado.dom.Event.DBLCLICK;
 import static org.jboss.arquillian.ajocado.dom.Event.MOUSEDOWN;
@@ -37,18 +35,15 @@ import static org.jboss.arquillian.ajocado.dom.Event.MOUSEMOVE;
 import static org.jboss.arquillian.ajocado.dom.Event.MOUSEOUT;
 import static org.jboss.arquillian.ajocado.dom.Event.MOUSEOVER;
 import static org.jboss.arquillian.ajocado.dom.Event.MOUSEUP;
-
 import static org.jboss.arquillian.ajocado.format.SimplifiedFormat.format;
-
 import static org.jboss.arquillian.ajocado.utils.URLUtils.buildUrl;
-
 import static org.jboss.test.selenium.locator.reference.ReferencedLocator.ref;
 import static org.richfaces.tests.metamer.ftest.attributes.AttributeList.basicAttributes;
-
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,14 +60,16 @@ import org.jboss.arquillian.ajocado.locator.JQueryLocator;
 import org.jboss.arquillian.ajocado.locator.attribute.AttributeLocator;
 import org.jboss.arquillian.ajocado.locator.element.ElementLocator;
 import org.jboss.arquillian.ajocado.locator.element.ExtendedLocator;
-import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.drone.api.annotation.Drone;
+import org.jboss.test.selenium.ScreenshotInterceptor;
 import org.jboss.test.selenium.locator.reference.ReferencedLocator;
 import org.jboss.test.selenium.waiting.EventFiredCondition;
 import org.richfaces.tests.metamer.ftest.attributes.AttributeEnum;
 import org.testng.SkipException;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 
 /**
  * Abstract test case used as a basis for majority of test cases.
@@ -80,11 +77,12 @@ import org.testng.annotations.BeforeMethod;
  * @author <a href="mailto:ppitonak@redhat.com">Pavol Pitonak</a>
  * @version $Revision: 22749 $
  */
-@RunAsClient
 public abstract class AbstractGrapheneTest extends AbstractMetamerTest {
 
     @Drone
     protected GrapheneSelenium selenium;
+    protected ScreenshotInterceptor screenshotInterceptor = new ScreenshotInterceptor();
+    protected PhaseInfo phaseInfo = new PhaseInfo();
 
     /**
      * Opens the tested page. If templates is not empty nor null, it appends url parameter with templates.
@@ -99,8 +97,16 @@ public abstract class AbstractGrapheneTest extends AbstractMetamerTest {
         }
 
         selenium.open(buildUrl(getTestUrl() + "?templates=" + template.toString()));
-
         selenium.waitForPageToLoad(TIMEOUT);
+    }
+
+    @Parameters("takeScreenshots")
+    @BeforeMethod(alwaysRun = true, dependsOnMethods = { "loadPage" })
+    public void enableScreenshots(@Optional("false") String takeScreenshots, Method method) {
+        if (!"false".equals(takeScreenshots)) {
+            screenshotInterceptor.setMethod(method);
+            selenium.getCommandInterceptionProxy().registerInterceptor(screenshotInterceptor);
+        }
     }
 
     /**
@@ -174,7 +180,7 @@ public abstract class AbstractGrapheneTest extends AbstractMetamerTest {
         selenium.fireEvent(element, event);
 
         waitGui.failWith("Attribute on" + attributeName + " does not work correctly").until(
-                new EventFiredCondition(event));
+            new EventFiredCondition(event));
     }
 
     /**
@@ -247,13 +253,14 @@ public abstract class AbstractGrapheneTest extends AbstractMetamerTest {
     }
 
     /**
-     * Tests onrequest (e.g. onsubmit, onrequest...) events by using javascript
-     * functions. First fills Metamer's input for according component attribute
-     * with testing value, then does an action, which should end by throwing a
-     * testing event and then wait for the event if it was really launched
+     * Tests onrequest (e.g. onsubmit, onrequest...) events by using javascript functions. First fills Metamer's input
+     * for according component attribute with testing value, then does an action, which should end by throwing a testing
+     * event and then wait for the event if it was really launched
      *
-     * @param eventAttribute event attribute (e.g. onsubmit, onrequest, onbeforedomupdate...)
-     * @param action action wich leads to launching an event
+     * @param eventAttribute
+     *            event attribute (e.g. onsubmit, onrequest, onbeforedomupdate...)
+     * @param action
+     *            action wich leads to launching an event
      */
     public void testRequestEvent(AttributeEnum eventAttribute, IEventLaunchAction action) {
         testRequestEventBefore(eventAttribute);
@@ -292,16 +299,15 @@ public abstract class AbstractGrapheneTest extends AbstractMetamerTest {
     public void testRequestEventsAfter(String... events) {
         String[] actualEvents = selenium.getEval(new JavaScript("window.metamerEvents")).split(" ");
         assertEquals(
-                actualEvents,
-                events,
-                format("The events ({0}) don't came in right order ({1})", Arrays.deepToString(actualEvents),
+            actualEvents,
+            events,
+            format("The events ({0}) don't came in right order ({1})", Arrays.deepToString(actualEvents),
                 Arrays.deepToString(events)));
     }
 
     public void testRequestEventAfter(AttributeEnum eventAttribute) {
-        waitGui.failWith("Attribute on" + eventAttribute
-                + " does not work correctly").until(new EventFiredCondition(
-                new Event(eventAttribute.toString())));
+        waitGui.failWith("Attribute on" + eventAttribute + " does not work correctly").until(
+            new EventFiredCondition(new Event(eventAttribute.toString())));
     }
 
     public void testRequestEventsAfterByAlert(String... events) {
@@ -316,9 +322,9 @@ public abstract class AbstractGrapheneTest extends AbstractMetamerTest {
 
         String[] actualEvents = list.toArray(new String[list.size()]);
         assertEquals(
-                actualEvents,
-                events,
-                format("The events ({0}) don't came in right order ({1})", Arrays.deepToString(actualEvents),
+            actualEvents,
+            events,
+            format("The events ({0}) don't came in right order ({1})", Arrays.deepToString(actualEvents),
                 Arrays.deepToString(events)));
     }
 
@@ -419,7 +425,7 @@ public abstract class AbstractGrapheneTest extends AbstractMetamerTest {
         selenium.waitForPageToLoad();
 
         assertTrue(selenium.getAttribute(attr).contains(value), "Attribute " + attribute + " should contain \"" + value
-                + "\".");
+            + "\".");
     }
 
     /**

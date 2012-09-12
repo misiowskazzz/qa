@@ -1,3 +1,4 @@
+data
 target
 test-output
 .classpath
@@ -5,3 +6,5 @@ test-output
 .project
 .clover
 .externalToolBuilders
+**/apps/*
+archetypes/richfaces-kitchensink-ftest/kitchensink-webdriver-ftest/

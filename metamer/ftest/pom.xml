@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- JBoss, Home of Professional Open Source Copyright 2010-2012, Red Hat, Inc. and individual contributors by the @authors tag.
-    See the copyright.txt in the distribution for a full listing of individual contributors. This is free software; you can redistribute
-    it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version. This software is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
-    General Public License for more details. You should have received a copy of the GNU Lesser General Public License along with this
-    software; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA, or see the
-    FSF site: http://www.fsf.org. -->
+See the copyright.txt in the distribution for a full listing of individual contributors. This is free software; you can redistribute
+it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version. This software is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+General Public License for more details. You should have received a copy of the GNU Lesser General Public License along with this
+software; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA, or see the
+FSF site: http://www.fsf.org. -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.richfaces.tests</groupId>
         <artifactId>metamer-root</artifactId>
-        <version>4.2.2-SNAPSHOT</version>
+        <version>4.3.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -23,13 +24,20 @@
     <name>RichFaces Metamer Ftest</name>
 
     <properties>
+        <!-- arquillian properties -->
+        <!-- default values according to http://docs.oracle.com/javase/7/docs/technotes/guides/net/ipv6_guide/index.html -->
+        <jvm.args.ip>-Djava.net.preferIPv4Stack=false -Djava.net.preferIPv6Addresses=false</jvm.args.ip>
+        <!-- jvm args for all containers without setting prefered IP -->
+        <arquillian.container.all.jvm.args>-Xms1024m -Xmx1024m -XX:MaxPermSize=512m</arquillian.container.all.jvm.args>
+        <arquillian.container.all.jvm.args.withIP>${arquillian.container.all.jvm.args} ${jvm.args.ip}</arquillian.container.all.jvm.args.withIP>
+        <!-- following will be set as system properties -->
+        <arquillian.container.jbossas.7-1.node0>127.0.0.1</arquillian.container.jbossas.7-1.node0>
+        <arquillian.container.jbossas.7-1.jvm.args>${arquillian.container.all.jvm.args.withIP} -Djboss.bind.address=${arquillian.container.jbossas.7-1.node0} -Djboss.bind.address.management=${arquillian.container.jbossas.7-1.node0} -Djboss.bind.address.unsecure=${arquillian.container.jbossas.7-1.node0}</arquillian.container.jbossas.7-1.jvm.args>
 
         <templates>plain</templates>
 
-        <testng.listeners>org.richfaces.tests.metamer.ftest.MatrixConfigurator,org.richfaces.tests.metamer.ftest.MetamerSeleniumLoggingTestListener,org.richfaces.tests.metamer.ftest.MetamerFailureLoggingTestListener,org.richfaces.tests.metamer.ftest.MetamerConsoleStatusTestListener</testng.listeners>
+        <testng.listeners>org.richfaces.tests.metamer.ftest.MatrixConfigurator,org.richfaces.tests.metamer.ftest.MetamerSeleniumLoggingTestListener,org.richfaces.tests.metamer.ftest.MetamerConsoleStatusTestListener,org.richfaces.tests.metamer.ftest.MetamerFailureLoggingTestListener</testng.listeners>
         <testng.suite.xml>src/test/resources/testng/testng.xml</testng.suite.xml>
-
-        <jvm.args.jacoco>-Djacoco.disabled=true</jvm.args.jacoco>
     </properties>
 
     <dependencies>
@@ -63,15 +71,26 @@
             <groupId>org.jboss.shrinkwrap.resolver</groupId>
             <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
             <scope>test</scope>
+            <version>2.0.0-alpha-1</version>
+        </dependency>
+<!--         <dependency> -->
+<!--             <groupId>org.jboss.shrinkwrap.descriptors</groupId> -->
+<!--             <artifactId>shrinkwrap-descriptors-api</artifactId> -->
+<!--         </dependency> -->
+<!--         <dependency> -->
+<!--             <groupId>org.jboss.shrinkwrap.descriptors</groupId> -->
+<!--             <artifactId>shrinkwrap-descriptors-impl</artifactId> -->
+<!--         </dependency> -->
+
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.descriptors</groupId>
+            <artifactId>shrinkwrap-descriptors-impl-javaee</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jboss.shrinkwrap.descriptors</groupId>
-            <artifactId>shrinkwrap-descriptors-api</artifactId>
+            <artifactId>shrinkwrap-descriptors-api-base</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.jboss.shrinkwrap.descriptors</groupId>
-            <artifactId>shrinkwrap-descriptors-impl</artifactId>
-        </dependency>
+
         <!-- Support for Selenium in Arquillian Drone -->
         <dependency>
             <groupId>org.jboss.arquillian.extension</groupId>
@@ -105,6 +124,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>com.opera</groupId>
+            <artifactId>operadriver</artifactId>
+        </dependency>
+
         <!-- TestNG listeners for better console output -->
         <dependency>
             <groupId>org.richfaces.tests</groupId>
@@ -151,9 +175,8 @@
                     <suiteXmlFiles>
                         <suiteXmlFiles>${testng.suite.xml}</suiteXmlFiles>
                     </suiteXmlFiles>
-                    <!-- Logging configuration for Selenium , templates -->
-                    <argLine>-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
-                        -Dtemplates='${templates}'</argLine>
+                    <!-- Logging configuration for Selenium , templates, ip -->
+                    <argLine>-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties -Dtemplates='${templates}' ${jvm.args.ip}</argLine>
                     <properties>
                         <property>
                             <name>listener</name>
@@ -161,7 +184,10 @@
                         </property>
                     </properties>
                     <systemPropertyVariables>
-                        <jvm.args.jacoco>${jvm.args.jacoco}</jvm.args.jacoco>
+                        <arquillian.container.jbossas.7-1.node0>${arquillian.container.jbossas.7-1.node0}</arquillian.container.jbossas.7-1.node0>
+                        <arquillian.container.jbossas.7-1.jvm.args>${arquillian.container.jbossas.7-1.jvm.args}</arquillian.container.jbossas.7-1.jvm.args>
+                        <arquillian.container.all.jvm.args>${arquillian.container.all.jvm.args}</arquillian.container.all.jvm.args>
+                        <logging.props.dir>${project.basedir}/src/test/resources</logging.props.dir>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -266,249 +292,23 @@
             </build>
         </profile>
         <profile>
-            <id>code-coverage</id>
+            <id>screenshots</id>
+            <properties>
+                <testng.suite.xml>src/test/resources/testng/testng-screenshots.xml</testng.suite.xml>
+            </properties>
+        </profile>
+        <profile>
+            <!-- only jbossas-managed-7-1 supported by now -->
+            <id>ipv6</id>
             <activation>
                 <property>
-                    <name>coverage</name>
+                    <name>ipv6</name>
                 </property>
             </activation>
             <properties>
-                <jvm.args.jacoco>-javaagent:${project.build.directory}/jacoco-jars/agent/jacocoagent.jar=destfile=${project.build.directory}/jacoco.exec,includes=*,append=true,output=file</jvm.args.jacoco>
+                <jvm.args.ip>-Djava.net.preferIPv4Stack=false -Djava.net.preferIPv6Addresses=true</jvm.args.ip>
+                <arquillian.container.jbossas.7-1.node0>[::1]</arquillian.container.jbossas.7-1.node0>
             </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <systemPropertyVariables>
-                                <jvm.args.jacoco>${jvm.args.jacoco}</jvm.args.jacoco>
-                            </systemPropertyVariables>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>jacoco-prepare</id>
-                                <phase>process-test-classes</phase>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                                <configuration>
-                                    <append>true</append>
-                                    <destFile>target/jacoco.exec</destFile>
-                                    <includes>
-                                        <include>*</include>
-                                    </includes>
-                                    <output>file</output>
-                                    <propertyName>jvm.args.jacoco</propertyName>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-dependency-plugin</artifactId>
-                        <executions>
-                           <!-- Copy the ant tasks jar. Needed for ts.jacoco.report-ant . -->
-                            <execution>
-                                <id>jacoco-dependency-ant</id>
-                                <goals>
-                                    <goal>copy</goal>
-                                </goals>
-                                <phase>process-test-resources</phase>
-                                <inherited>false</inherited>
-                                <configuration>
-                                    <artifactItems>
-                                        <artifactItem>
-                                            <groupId>org.jacoco</groupId>
-                                            <artifactId>org.jacoco.ant</artifactId>
-                                            <version>${version.jacoco.plugin}</version>
-                                        </artifactItem>
-                                    </artifactItems>
-                                    <stripVersion>true</stripVersion>
-                                    <outputDirectory>${basedir}/target/jacoco-jars</outputDirectory>
-                                </configuration>
-                            </execution>
-                            <!-- Copy the agent jar. Needed for ${jvm.args.jacoco} to have this jar on known path. If the ts.jacoco-prepare worked and really put the value into the property, this might go away. -->
-                            <execution>
-                                <id>jacoco-dependency-agent</id>
-                                <goals>
-                                    <goal>unpack</goal>
-                                </goals>
-                                <phase>process-test-resources</phase>
-                                <inherited>false</inherited>
-                                <configuration>
-                                    <artifactItems>
-                                        <artifactItem>
-                                            <groupId>org.jacoco</groupId>
-                                            <artifactId>org.jacoco.agent</artifactId>
-                                            <version>${version.jacoco.plugin}</version>
-                                        </artifactItem>
-                                    </artifactItems>
-                                    <stripVersion>true</stripVersion>
-                                    <outputDirectory>${basedir}/target/jacoco-jars/agent</outputDirectory>
-                                </configuration>
-                            </execution>
-                            <!-- Richfaces sources -->
-                            <execution>
-                                <id>richfaces-sources-unpack</id>
-                                <phase>process-test-classes</phase>
-                                <goals>
-                                    <goal>unpack</goal>
-                                </goals>
-                                <configuration>
-                                    <artifactItems>
-                                        <artifactItem>
-                                            <groupId>org.richfaces.core</groupId>
-                                            <artifactId>richfaces-core-api</artifactId>
-                                            <version>${version.richfaces}</version>
-                                            <classifier>sources</classifier>
-                                            <overWrite>false</overWrite>
-                                            <outputDirectory>${project.build.directory}/sources/richfaces-core-api</outputDirectory>
-                                        </artifactItem>
-                                        <artifactItem>
-                                            <groupId>org.richfaces.core</groupId>
-                                            <artifactId>richfaces-core-impl</artifactId>
-                                            <version>${version.richfaces}</version>
-                                            <classifier>sources</classifier>
-                                            <overWrite>false</overWrite>
-                                            <outputDirectory>${project.build.directory}/sources/richfaces-core-impl</outputDirectory>
-                                        </artifactItem>
-                                        <artifactItem>
-                                            <groupId>org.richfaces.ui</groupId>
-                                            <artifactId>richfaces-components-api</artifactId>
-                                            <version>${version.richfaces}</version>
-                                            <classifier>sources</classifier>
-                                            <overWrite>false</overWrite>
-                                            <outputDirectory>${project.build.directory}/sources/richfaces-components-api</outputDirectory>
-                                        </artifactItem>
-                                        <artifactItem>
-                                            <groupId>org.richfaces.ui</groupId>
-                                            <artifactId>richfaces-components-ui</artifactId>
-                                            <version>${version.richfaces}</version>
-                                            <classifier>sources</classifier>
-                                            <overWrite>false</overWrite>
-                                            <outputDirectory>${project.build.directory}/sources/richfaces-components-ui</outputDirectory>
-                                        </artifactItem>
-                                    </artifactItems>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                   <!-- Ant plugin. -->
-                    <plugin>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <executions>
-                            <!-- Prepare Metamer -->
-                            <execution>
-                                <id>jacoco-metamer</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <configuration>
-                                    <tasks>
-                                        <unzip src="${project.build.directory}/metamer.war" dest="${project.build.directory}/metamer-war-unzipped" overwrite="true" />
-                                    </tasks>
-                                </configuration>
-                            </execution>
-                            <!-- DEBUG -->
-                            <execution>
-                                <id>jacoco-debug</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <inherited>false</inherited>
-                                <configuration>
-                                    <target>
-                                        <echo>Jacoco argline: ${jvm.args.jacoco}</echo>
-                                        <echo>Jacoco jar: ${basedir}/target/jacoco-jars/org.jacoco.ant.jar</echo>
-                                    </target>
-                                </configuration>
-                            </execution>
-                            <!-- Must be run using Ant due to https://sourceforge.net/tracker/?func=detail&aid=3474708&group_id=177969&atid=883354 -->
-                            <execution>
-                                <id>jacoco-report-ant</id>
-                                <phase>post-integration-test</phase> <!-- post-integration-test -->
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <inherited>false</inherited>
-                                <configuration>
-                                    <target>
-                                        <taskdef name="report" classname="org.jacoco.ant.ReportTask">
-                                            <classpath path="${basedir}/target/jacoco-jars/org.jacoco.ant.jar" />
-                                        </taskdef>
-                                        <echo>Creating JaCoCo test coverage reports...</echo>
-                                        <mkdir dir="${basedir}/target/coverage-report" />
-                                        <report>
-                                            <executiondata>
-                                                <fileset dir="${basedir}">
-                                                    <include name="**/target/jacoco.exec" />
-                                                </fileset>
-                                            </executiondata>
-                                            <structure name="RichFaces Project">
-                                                <group name="RichFaces Core API">
-                                                    <classfiles>
-                                                        <fileset dir="${project.build.directory}/metamer-war-unzipped/WEB-INF/lib">
-                                                            <include name="richfaces-core-api*" />
-                                                        </fileset>
-                                                    </classfiles>
-                                                    <sourcefiles encoding="UTF-8">
-                                                        <fileset dir="${project.build.directory}/sources/richfaces-core-api" />
-                                                    </sourcefiles>
-                                                </group>
-                                                <group name="RichFaces Core Implementation">
-                                                    <classfiles>
-                                                        <fileset dir="${project.build.directory}/metamer-war-unzipped/WEB-INF/lib">
-                                                            <include name="richfaces-core-impl*" />
-                                                        </fileset>
-                                                    </classfiles>
-                                                    <sourcefiles encoding="UTF-8">
-                                                        <fileset dir="${project.build.directory}/sources/richfaces-core-impl" />
-                                                    </sourcefiles>
-                                                </group>
-                                                <group name="RichFaces Components API">
-                                                    <classfiles>
-                                                        <fileset dir="${project.build.directory}/metamer-war-unzipped/WEB-INF/lib">
-                                                            <include name="richfaces-components-api*" />
-                                                        </fileset>
-                                                    </classfiles>
-                                                    <sourcefiles encoding="UTF-8">
-                                                        <fileset dir="${project.build.directory}/sources/richfaces-components-api" />
-                                                    </sourcefiles>
-                                                </group>
-                                                <group name="RichFaces Components UI">
-                                                    <classfiles>
-                                                        <fileset dir="${project.build.directory}/metamer-war-unzipped/WEB-INF/lib">
-                                                            <include name="richfaces-components-ui*" />
-                                                        </fileset>
-                                                    </classfiles>
-                                                    <sourcefiles encoding="UTF-8">
-                                                        <fileset dir="${project.build.directory}/sources/richfaces-components-ui" />
-                                                    </sourcefiles>
-                                                </group>
-                                            </structure>
-                                            <html destdir="${basedir}/target/coverage-report/html" />
-                                            <xml destfile="${basedir}/target/coverage-report/coverage-report.xml" />
-                                            <csv destfile="${basedir}/target/coverage-report/coverage-report.csv" />
-                                        </report>
-                                    </target>
-                                </configuration>
-                            </execution>
-                        </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.jacoco</groupId>
-                                <artifactId>org.jacoco.ant</artifactId>
-                                <version>${version.jacoco.plugin}</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
 </project>

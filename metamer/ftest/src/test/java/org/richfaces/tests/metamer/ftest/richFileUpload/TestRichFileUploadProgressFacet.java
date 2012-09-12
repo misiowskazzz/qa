@@ -1,24 +1,23 @@
 /**
- * *****************************************************************************
- * JBoss, Home of Professional Open Source Copyright 2010-2012, Red Hat, Inc.
- * and individual contributors by the @authors tag. See the copyright.txt in the
- * distribution for a full listing of individual contributors.
+ * JBoss, Home of Professional Open Source
+ * Copyright 2012, Red Hat, Inc. and individual contributors
+ * by the @authors tag. See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
  *
- * This is free software; you can redistribute it and/or modify it under the
- * terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
  *
- * This software is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this software; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA, or see the FSF
- * site: http://www.fsf.org.
- * *****************************************************************************
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 package org.richfaces.tests.metamer.ftest.richFileUpload;
 
@@ -52,7 +51,7 @@ public class TestRichFileUploadProgressFacet extends AbstractFileUploadWebDriver
         fileUploadAttributes.set(FileUploadAttributes.onfilesubmit, "window.stop()");
 
         //send file to server, the file will not be shown in uploaded files list, because we stop the rendering before it
-        sendFile(acceptableFile, true, false);
+        sendFileWithWaiting(acceptableFile, true, false);
 
         new WebDriverWait(driver, 5).failWith("Progress bar should be displayed.").until(ElementDisplayed.getInstance().element(page.customPB));
     }
@@ -60,7 +59,7 @@ public class TestRichFileUploadProgressFacet extends AbstractFileUploadWebDriver
     @Test
     public void testCustomProgressBarPresenceAfterFinishedUpload() {
         //send file to server
-        sendFile(acceptableFile, true, true);
+        sendFileWithWaiting(acceptableFile, true, true);
 
         new WebDriverWait(driver, 5).failWith("Done label should be on displayed after upload.").until(ElementDisplayed.getInstance().element(page.uploadStatusLabel));
         new WebDriverWait(driver, 5).failWith("Progress bar should not be displayed after upload is completed.").until(ElementNotDisplayed.getInstance().element(page.customPB));

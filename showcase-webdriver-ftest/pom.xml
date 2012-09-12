@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.richfaces.tests</groupId>
         <artifactId>richfaces-qa-parent</artifactId>
-        <version>4.2.2-SNAPSHOT</version>
+        <version>4.3.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -14,15 +14,11 @@
     <name>RichFaces Showcase Mobile Ftest</name>
 
     <properties>
-        <testng.listeners>org.jboss.arquillian.testng.container.TestListener</testng.listeners>
+        <testng.listeners>org.jboss.test.selenium.listener.ConsoleStatusTestListener,org.jboss.test.selenium.listener.FailureLoggingTestListener,org.jboss.test.selenium.listener.SeleniumLoggingTestListener</testng.listeners>
         <testng.suite.xml>src/test/resources/testng.xml</testng.suite.xml>
-        <arquillian.version>1.0.0.CR6</arquillian.version>
-        <arquillian.testng.version>1.0.0.CR6</arquillian.testng.version>
-        <arquillian.android.extension.version>1.0.0.Alpha1</arquillian.android.extension.version>
         <android.serial>aaa</android.serial>
         <android.sdk.home />
-        <selenium.version>2.9.0</selenium.version>
-        <android.apk.version>2.6.0</android.apk.version>
+        <android.apk.version>2.21.0</android.apk.version>
         <android.apk.url>http://selenium.googlecode.com/files/android-server-${android.apk.version}.apk</android.apk.url>
         <showcase.layout>mobile</showcase.layout>
     </properties>
@@ -35,43 +31,23 @@
     </developers>
 
     <dependencies>
-        <!-- Selenium -->
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>${selenium.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-android-driver</artifactId>
-            <version>${selenium.version}</version>
-        </dependency>
         <!-- Support for WebDriver in Arquillian Drone -->
         <dependency>
             <groupId>org.jboss.arquillian.extension</groupId>
-            <artifactId>arquillian-drone-impl</artifactId>
-            <version>${arquillian.drone.version}</version>
+            <artifactId>arquillian-drone-webdriver-depchain</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.arquillian.extension</groupId>
-            <artifactId>arquillian-drone-webdriver</artifactId>
-            <version>${arquillian.drone.version}</version>
-            <scope>test</scope>
+            <type>pom</type>
         </dependency>
         <!-- Android extension -->
         <dependency>
             <groupId>org.jboss.arquillian.extension</groupId>
             <artifactId>arquillian-android-depchain</artifactId>
-            <version>${arquillian.android.extension.version}</version>
             <type>pom</type>
-            <scope>test</scope>
         </dependency>
         <!-- Arquillian TestNG support -->
         <dependency>
             <groupId>org.jboss.arquillian.testng</groupId>
             <artifactId>arquillian-testng-container</artifactId>
-            <version>${arquillian.testng.version}</version>
         </dependency>
         <!-- TestNG -->
         <dependency>
@@ -84,6 +60,13 @@
             <artifactId>webdriver-utils</artifactId>
             <scope>test</scope>
             <version>${project.version}</version>
+        </dependency>
+        <!-- TestNG listeners for better console output -->
+        <dependency>
+            <groupId>org.richfaces.tests</groupId>
+            <artifactId>testng-listeners</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -131,6 +114,13 @@
                         <showcase.layout>${showcase.layout}</showcase.layout>
                         <android.apk.version>${android.apk.version}</android.apk.version>
                     </systemPropertyVariables>
+                    <!-- listeners for better console output -->
+                    <properties>
+                        <property>
+                            <name>listener</name>
+                            <value>${testng.listeners}</value>
+                        </property>
+                    </properties>
                 </configuration>
             </plugin>
         </plugins>

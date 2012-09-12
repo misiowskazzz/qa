@@ -33,11 +33,10 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.NotEmpty;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.richfaces.component.UIInplaceSelect;
 import org.richfaces.tests.metamer.Attributes;
-import org.richfaces.tests.metamer.bean.Model;
 import org.richfaces.tests.metamer.bean.RichBean;
 import org.richfaces.tests.metamer.model.Capital;
 import org.slf4j.Logger;
@@ -53,9 +52,14 @@ import org.slf4j.LoggerFactory;
 @ViewScoped
 public class RichInplaceSelectBean implements Serializable {
 
+    public static final String NOT_EMPTY_VALIDATION_MSG = "may not be empty";
+    public static final String REGEXP_VALIDATION_MSG = "must match \"[a-z].*\"";
+    public static final String STRING_SIZE_VALIDATION_MSG = "size must be between 3 and 6";
+
     private static final long serialVersionUID = -1L;
     private static Logger logger;
     private Attributes attributes;
+
     @ManagedProperty("#{model.capitals}")
     private List<Capital> capitals;
     private List<SelectItem> capitalsOptions = null;
@@ -141,7 +145,7 @@ public class RichInplaceSelectBean implements Serializable {
         this.validationOptions = validationOptions;
     }
 
-    @NotEmpty
+    @NotEmpty(message = NOT_EMPTY_VALIDATION_MSG)
     public String getValue1() {
         return value1;
     }
@@ -150,7 +154,7 @@ public class RichInplaceSelectBean implements Serializable {
         this.value1 = value1;
     }
 
-    @Pattern(regexp = "[a-z].*")
+    @Pattern(regexp = "[a-z].*", message = REGEXP_VALIDATION_MSG)
     public String getValue2() {
         return value2;
     }
@@ -159,7 +163,7 @@ public class RichInplaceSelectBean implements Serializable {
         this.value2 = value2;
     }
 
-    @Size(min = 3, max = 6)
+    @Size(min = 3, max = 6, message = STRING_SIZE_VALIDATION_MSG)
     public String getValue3() {
         return value3;
     }

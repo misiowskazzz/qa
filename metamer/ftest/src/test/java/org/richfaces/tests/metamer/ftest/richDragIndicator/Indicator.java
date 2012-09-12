@@ -25,8 +25,8 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
-import org.jboss.arquillian.ajocado.framework.AjaxSelenium;
-import org.jboss.arquillian.ajocado.framework.AjaxSeleniumContext;
+import org.jboss.arquillian.ajocado.framework.GrapheneSelenium;
+import org.jboss.arquillian.ajocado.framework.GrapheneSeleniumContext;
 import org.jboss.arquillian.ajocado.locator.JQueryLocator;
 import org.richfaces.tests.metamer.ftest.model.AbstractModel;
 
@@ -36,7 +36,7 @@ import org.richfaces.tests.metamer.ftest.model.AbstractModel;
  */
 public class Indicator extends AbstractModel<JQueryLocator> {
 
-    private AjaxSelenium selenium = AjaxSeleniumContext.getProxy();
+    private GrapheneSelenium selenium = GrapheneSeleniumContext.getProxy();
 
     private boolean defaultIndicator = false;
     private String acceptClass;
@@ -64,7 +64,11 @@ public class Indicator extends AbstractModel<JQueryLocator> {
     }
 
     public boolean isVisible() {
-        return selenium.isVisible(this);
+        if (selenium.isElementPresent(this)) {
+            return selenium.isVisible(this);
+        } else {
+            return false;
+        }
     }
 
     public boolean belongsClass(String className) {
