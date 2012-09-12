@@ -37,7 +37,6 @@ import org.jboss.test.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.richfaces.tests.metamer.ftest.AbstractWebDriverTest;
 import org.testng.annotations.AfterMethod;
@@ -50,9 +49,8 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:jjamrich@redhat.com">Jan Jamrich</a>
  * @version $Revision$
  */
-public class TestAutocompleteAttributes2 extends AbstractWebDriverTest {
+public class TestAutocompleteAttributes2 extends AbstractWebDriverTest<SimpleAutocompletePage> {
 
-    private SimpleAutocompletePage page;
     AttributeContains attributeContains = AttributeContains.getInstance();
     ElementDisplayed displayed = ElementDisplayed.getInstance();
     ElementNotDisplayed notDisplayed = ElementNotDisplayed.getInstance();
@@ -66,7 +64,6 @@ public class TestAutocompleteAttributes2 extends AbstractWebDriverTest {
 
     @BeforeMethod
     public void loadPage() {
-        page = new SimpleAutocompletePage();
         injectWebElementsToPage(page);
         actions = new Actions(driver);
     }
@@ -363,6 +360,11 @@ public class TestAutocompleteAttributes2 extends AbstractWebDriverTest {
         autocompleteAttributes.set(AutocompleteAttributes.tabindex, tabindexVal);
         new WebDriverWait(driver, 5).until(attributeContains.element(page.autocompleteInput)
             .attributeName("tabindex").attributeValue(tabindexVal));
+    }
+
+    @Override
+    protected SimpleAutocompletePage createPage() {
+        return new SimpleAutocompletePage();
     }
 
 }

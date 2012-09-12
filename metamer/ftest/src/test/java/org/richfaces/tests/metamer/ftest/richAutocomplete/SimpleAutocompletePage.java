@@ -23,13 +23,14 @@ package org.richfaces.tests.metamer.ftest.richAutocomplete;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.richfaces.tests.metamer.ftest.webdriver.MetamerPage;
 
 /**
  * Page object for rich:autocomplete component page: faces/components/richAutocomplete/autocomplete.xhtml
  * @author <a href="mailto:jjamrich@redhat.com">Jan Jamrich</a>
  * @version $Revision$
  */
-public class SimpleAutocompletePage {
+public class SimpleAutocompletePage extends MetamerPage {
 
     @FindBy(css="span[id$=autocomplete]")
     public WebElement autocomplete;
