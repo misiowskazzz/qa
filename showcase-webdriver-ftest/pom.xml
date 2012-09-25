@@ -183,6 +183,14 @@
                 <iphone.ARQ1110.workaround>true</iphone.ARQ1110.workaround>
                 <remote.address>http://localhost:3001/wd/hub</remote.address>
             </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.arquillian.extension</groupId>
+                    <artifactId>arquillian-ios-depchain</artifactId>
+                    <type>pom</type>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
         </profile>
 
     </profiles>

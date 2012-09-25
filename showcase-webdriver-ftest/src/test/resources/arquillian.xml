@@ -44,6 +44,10 @@ http://www.fsf.org. -->
         <property name="javascriptEnabled">true</property>
     </extension>
 
+    <extension qualifier="ios-drone">
+        <property name="localSeleniumCopy">/Users/jboss/Workspace/selenium-read-only</property>
+    </extension>
+
     <extension qualifier="android">
         <property name="home">${android.sdk.home}</property>
         <property name="serialId">${android.serial}</property>
