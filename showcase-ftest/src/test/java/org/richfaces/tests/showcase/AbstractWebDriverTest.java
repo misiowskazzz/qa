@@ -37,7 +37,7 @@ public class AbstractWebDriverTest<P> extends AbstractShowcaseTest {
     protected WebDriver webDriver;
 
     @Page
-    protected P testPage;
+    protected P page;
 
     @BeforeMethod
     public void loadPage() {
