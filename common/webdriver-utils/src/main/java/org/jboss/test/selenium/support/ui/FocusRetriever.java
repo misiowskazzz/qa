@@ -19,41 +19,27 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  *******************************************************************************/
-package org.richfaces.tests.metamer.ftest.richFocus;
+package org.jboss.test.selenium.support.ui;
 
-import static org.jboss.arquillian.ajocado.utils.URLUtils.buildUrl;
-import static org.jboss.arquillian.graphene.Graphene.waitModel;
-import static org.testng.Assert.assertEquals;
-
-import java.net.URL;
-
-import org.jboss.arquillian.graphene.spi.annotations.Page;
-import org.jboss.test.selenium.support.ui.ElementIsFocused;
-import org.richfaces.tests.metamer.ftest.AbstractWebDriverTest;
-import org.testng.annotations.Test;
+import org.jboss.arquillian.graphene.javascript.JSInterfaceFactory;
+import org.jboss.arquillian.graphene.javascript.JavaScript;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author <a href="mailto:jhuska@redhat.com">Juraj Huska</a>
  */
-public class TestFocusManager extends AbstractWebDriverTest {
+@JavaScript("document")
+public abstract class FocusRetriever {
+    public abstract WebElement getActiveElement();
 
-    @Page
-    private FocusSimplePage page;
-
-    @Override
-    public URL getTestUrl() {
-        return buildUrl(contextPath, "faces/components/richFocus/focusManager.xhtml");
+    /**
+     * Returns active (focused) element - if no element is focused (it means body element is active), null is returned
+     */
+    public static WebElement retrieveActiveElement() {
+        WebElement element = JSInterfaceFactory.create(FocusRetriever.class).getActiveElement();
+        if ("body".equals(element.getTagName())) {
+            return null;
+        }
+        return element;
     }
-
-    @Test
-    public void testFocusManager() {
-        waitModel().until(new ElementIsFocused(page.getAgeInput().getInput()));
-
-        page.typeStringAndDoNotCareAboutFocus();
-
-        String actual = page.getAgeInput().getStringValue();
-        assertEquals(actual, AbstractFocusPage.EXPECTED_STRING,
-            "Age input should be focused by focus manager from backing bean!");
-    }
-
 }

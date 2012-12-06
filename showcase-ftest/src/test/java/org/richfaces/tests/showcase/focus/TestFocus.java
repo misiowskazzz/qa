@@ -19,37 +19,37 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  *******************************************************************************/
-package org.richfaces.tests.metamer.ftest.richFocus;
+package org.richfaces.tests.showcase.focus;
 
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
-import com.google.common.base.Predicate;
+import java.util.concurrent.TimeUnit;
+
+import org.jboss.test.selenium.support.ui.ElementIsFocused;
+import org.richfaces.tests.showcase.AbstractWebDriverTest;
+import org.richfaces.tests.showcase.focus.page.FocusPage;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:jhuska@redhat.com">Juraj Huska</a>
+ * @version $Revision$
  */
-public class ElementIsFocused implements Predicate<WebDriver> {
+public class TestFocus extends AbstractWebDriverTest<FocusPage> {
 
-    private WebElement element;
+    public static final int TIMEOUT_FOCUS = 2;
 
-    /**
-     * Provide element to wait to gain focus or null if you want to fail for no element having focus
-     */
-    public ElementIsFocused(WebElement element) {
-        this.element = element;
+    @Test
+    public void testFirstInputFocusedAfterPageLoad() {
+        waitModel().withTimeout(TIMEOUT_FOCUS, TimeUnit.SECONDS).until(new ElementIsFocused(page.nameInput.getInput()));
     }
 
-    @Override
-    public boolean apply(WebDriver browser) {
-        try {
-            if (element == null) {
-                return FocusRetriever.retrieveActiveElement() == null;
-            }
-            return element.equals(FocusRetriever.retrieveActiveElement());
-        } catch (StaleElementReferenceException e) {
-            return false;
-        }
+    @Test
+    public void testFocusOnJobWhenItDoesNotPassValidation() {
+        page.nameInput.fillIn("RichFaces");
+        page.jobInput.fillIn("1");
+
+        page.submitButton.click();
+        waitModel().withTimeout(TIMEOUT_FOCUS, TimeUnit.SECONDS).until(new ElementIsFocused(page.jobInput.getInput()));
     }
+
 }

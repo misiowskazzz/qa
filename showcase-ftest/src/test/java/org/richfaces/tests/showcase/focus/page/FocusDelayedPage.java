@@ -19,41 +19,49 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  *******************************************************************************/
-package org.richfaces.tests.metamer.ftest.richFocus;
+package org.richfaces.tests.showcase.focus.page;
 
-import static org.jboss.arquillian.ajocado.utils.URLUtils.buildUrl;
+import static org.jboss.arquillian.graphene.Graphene.element;
+import static org.jboss.arquillian.graphene.Graphene.waitGui;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
-import static org.testng.Assert.assertEquals;
 
-import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
-import org.jboss.arquillian.graphene.spi.annotations.Page;
+import org.jboss.arquillian.graphene.spi.annotations.FindBy;
 import org.jboss.test.selenium.support.ui.ElementIsFocused;
-import org.richfaces.tests.metamer.ftest.AbstractWebDriverTest;
-import org.testng.annotations.Test;
+import org.openqa.selenium.WebElement;
+import org.richfaces.tests.showcase.focus.TestFocus;
 
 /**
  * @author <a href="mailto:jhuska@redhat.com">Juraj Huska</a>
+ * @version $Revision$
  */
-public class TestFocusManager extends AbstractWebDriverTest {
+public class FocusDelayedPage extends FocusPage {
 
-    @Page
-    private FocusSimplePage page;
+    @FindBy(jquery = "*[type=button]")
+    public WebElement showPopupButton;
 
-    @Override
-    public URL getTestUrl() {
-        return buildUrl(contextPath, "faces/components/richFocus/focusManager.xhtml");
+    @FindBy(className = ".rf-pp-cnt:visible")
+    public WebElement popupContent;
+
+    @FindBy(jquery = "*[value*=Save]")
+    public WebElement saveButton;
+
+    @FindBy(jquery = "*[value*=Cancel]")
+    public WebElement cancelButton;
+
+    public void showPopup() {
+        showPopupButton.click();
+        waitGui().until(element(saveButton).isVisible());
     }
 
-    @Test
-    public void testFocusManager() {
-        waitModel().until(new ElementIsFocused(page.getAgeInput().getInput()));
+    public void cancelPopup() {
+        cancelButton.click();
+        waitGui().until(element(saveButton).not().isVisible());
+    }
 
-        page.typeStringAndDoNotCareAboutFocus();
-
-        String actual = page.getAgeInput().getStringValue();
-        assertEquals(actual, AbstractFocusPage.EXPECTED_STRING,
-            "Age input should be focused by focus manager from backing bean!");
+    public void waitForFocusIsGiven(WebElement input) {
+        waitModel().withTimeout(TestFocus.TIMEOUT_FOCUS, TimeUnit.SECONDS).until(new ElementIsFocused(input));
     }
 
 }

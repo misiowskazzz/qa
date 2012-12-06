@@ -19,41 +19,49 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  *******************************************************************************/
-package org.richfaces.tests.metamer.ftest.richFocus;
+package org.richfaces.tests.showcase.focus;
 
-import static org.jboss.arquillian.ajocado.utils.URLUtils.buildUrl;
-import static org.jboss.arquillian.graphene.Graphene.waitModel;
-import static org.testng.Assert.assertEquals;
+import static org.jboss.arquillian.graphene.Graphene.guardHttp;
+import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 
-import java.net.URL;
-
-import org.jboss.arquillian.graphene.spi.annotations.Page;
-import org.jboss.test.selenium.support.ui.ElementIsFocused;
-import org.richfaces.tests.metamer.ftest.AbstractWebDriverTest;
+import org.jboss.arquillian.ajocado.utils.URLUtils;
+import org.richfaces.tests.showcase.AbstractWebDriverTest;
+import org.richfaces.tests.showcase.focus.page.FocusManagerPage;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:jhuska@redhat.com">Juraj Huska</a>
+ * @version $Revision$
  */
-public class TestFocusManager extends AbstractWebDriverTest {
+public class TestFocusManager extends AbstractWebDriverTest<FocusManagerPage> {
 
-    @Page
-    private FocusSimplePage page;
-
+    // workaround till the sample will not be renamed to comply camel case convention
     @Override
-    public URL getTestUrl() {
-        return buildUrl(contextPath, "faces/components/richFocus/focusManager.xhtml");
+    @BeforeMethod
+    public void loadPage() {
+
+        this.contextRoot = getContextRoot();
+
+        webDriver.get(URLUtils.buildUrl(contextRoot, "/showcase/",
+            "richfaces/component-sample.jsf?demo=focus&sample=focus-manager&skin=blueSky").toExternalForm());
     }
 
     @Test
-    public void testFocusManager() {
-        waitModel().until(new ElementIsFocused(page.getAgeInput().getInput()));
+    public void testFocusOnSecInputAfterLoad() {
+        page.waitTillSecondInputIsFocused();
+    }
 
-        page.typeStringAndDoNotCareAboutFocus();
+    @Test
+    public void testFocusOnSecInputAfterFormSubmission() {
+        guardHttp(page.formSubmissionButton).click();
+        page.waitTillSecondInputIsFocused();
+    }
 
-        String actual = page.getAgeInput().getStringValue();
-        assertEquals(actual, AbstractFocusPage.EXPECTED_STRING,
-            "Age input should be focused by focus manager from backing bean!");
+    @Test
+    public void testFocusOnSecInputAfterAjaxRequest() {
+        guardXhr(page.ajaxButton).click();
+        page.waitTillSecondInputIsFocused();
     }
 
 }

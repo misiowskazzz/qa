@@ -19,41 +19,48 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  *******************************************************************************/
-package org.richfaces.tests.metamer.ftest.richFocus;
+package org.richfaces.tests.showcase.focus;
 
-import static org.jboss.arquillian.ajocado.utils.URLUtils.buildUrl;
-import static org.jboss.arquillian.graphene.Graphene.waitModel;
+import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 import static org.testng.Assert.assertEquals;
 
-import java.net.URL;
-
-import org.jboss.arquillian.graphene.spi.annotations.Page;
-import org.jboss.test.selenium.support.ui.ElementIsFocused;
-import org.richfaces.tests.metamer.ftest.AbstractWebDriverTest;
+import org.jboss.arquillian.ajocado.utils.URLUtils;
+import org.richfaces.tests.showcase.AbstractWebDriverTest;
+import org.richfaces.tests.showcase.focus.page.FocusPage;
+import org.richfaces.tests.showcase.focus.page.FocusPreservePage;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:jhuska@redhat.com">Juraj Huska</a>
+ * @version $Revision$
  */
-public class TestFocusManager extends AbstractWebDriverTest {
+public class TestFocusPreserve extends AbstractWebDriverTest<FocusPreservePage> {
 
-    @Page
-    private FocusSimplePage page;
+    private static final String EXPECTED_OUTCOME = "RichFaces";
 
+    // workaround till the sample will not be renamed to comply camel case convention
     @Override
-    public URL getTestUrl() {
-        return buildUrl(contextPath, "faces/components/richFocus/focusManager.xhtml");
+    @BeforeMethod
+    public void loadPage() {
+
+        this.contextRoot = getContextRoot();
+
+        webDriver.get(URLUtils.buildUrl(contextRoot, "/showcase/",
+            "richfaces/component-sample.jsf?demo=focus&sample=focus-preserve&skin=blueSky").toExternalForm());
     }
 
     @Test
-    public void testFocusManager() {
-        waitModel().until(new ElementIsFocused(page.getAgeInput().getInput()));
+    public void testFocusIsPreserved() {
+        page.waitTillFirstInputIsFocused();
 
-        page.typeStringAndDoNotCareAboutFocus();
+        FocusPage.typeSomethingAndDoNotCareAboutFocus(EXPECTED_OUTCOME);
 
-        String actual = page.getAgeInput().getStringValue();
-        assertEquals(actual, AbstractFocusPage.EXPECTED_STRING,
-            "Age input should be focused by focus manager from backing bean!");
+        guardXhr(page.button).click();
+
+        page.waitTillFirstInputIsFocused();
+
+        String actual = page.output.getText();
+        assertEquals(actual, EXPECTED_OUTCOME, "The output was not updated correctly after form submission!");
     }
-
 }

@@ -19,41 +19,37 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  *******************************************************************************/
-package org.richfaces.tests.metamer.ftest.richFocus;
+package org.jboss.test.selenium.support.ui;
 
-import static org.jboss.arquillian.ajocado.utils.URLUtils.buildUrl;
-import static org.jboss.arquillian.graphene.Graphene.waitModel;
-import static org.testng.Assert.assertEquals;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
-import java.net.URL;
-
-import org.jboss.arquillian.graphene.spi.annotations.Page;
-import org.jboss.test.selenium.support.ui.ElementIsFocused;
-import org.richfaces.tests.metamer.ftest.AbstractWebDriverTest;
-import org.testng.annotations.Test;
+import com.google.common.base.Predicate;
 
 /**
  * @author <a href="mailto:jhuska@redhat.com">Juraj Huska</a>
  */
-public class TestFocusManager extends AbstractWebDriverTest {
+public class ElementIsFocused implements Predicate<WebDriver> {
 
-    @Page
-    private FocusSimplePage page;
+    private WebElement element;
+
+    /**
+     * Provide element to wait to gain focus or null if you want to fail for no element having focus
+     */
+    public ElementIsFocused(WebElement element) {
+        this.element = element;
+    }
 
     @Override
-    public URL getTestUrl() {
-        return buildUrl(contextPath, "faces/components/richFocus/focusManager.xhtml");
+    public boolean apply(WebDriver browser) {
+        try {
+            if (element == null) {
+                return FocusRetriever.retrieveActiveElement() == null;
+            }
+            return element.equals(FocusRetriever.retrieveActiveElement());
+        } catch (StaleElementReferenceException e) {
+            return false;
+        }
     }
-
-    @Test
-    public void testFocusManager() {
-        waitModel().until(new ElementIsFocused(page.getAgeInput().getInput()));
-
-        page.typeStringAndDoNotCareAboutFocus();
-
-        String actual = page.getAgeInput().getStringValue();
-        assertEquals(actual, AbstractFocusPage.EXPECTED_STRING,
-            "Age input should be focused by focus manager from backing bean!");
-    }
-
 }

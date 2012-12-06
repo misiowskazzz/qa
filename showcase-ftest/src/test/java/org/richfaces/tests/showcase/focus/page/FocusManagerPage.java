@@ -19,27 +19,34 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  *******************************************************************************/
-package org.richfaces.tests.metamer.ftest.richFocus;
+package org.richfaces.tests.showcase.focus.page;
 
-import org.jboss.arquillian.graphene.javascript.JSInterfaceFactory;
-import org.jboss.arquillian.graphene.javascript.JavaScript;
+import static org.jboss.arquillian.graphene.Graphene.waitModel;
+
+import java.util.concurrent.TimeUnit;
+
+import org.jboss.arquillian.graphene.spi.annotations.FindBy;
+import org.jboss.test.selenium.support.ui.ElementIsFocused;
 import org.openqa.selenium.WebElement;
+import org.richfaces.tests.showcase.focus.TestFocus;
 
 /**
  * @author <a href="mailto:jhuska@redhat.com">Juraj Huska</a>
+ * @version $Revision$
  */
-@JavaScript("document")
-public abstract class FocusRetriever {
-    public abstract WebElement getActiveElement();
+public class FocusManagerPage {
 
-    /**
-     * Returns active (focused) element - if no element is focused (it means body element is active), null is returned
-     */
-    public static WebElement retrieveActiveElement() {
-        WebElement element = JSInterfaceFactory.create(FocusRetriever.class).getActiveElement();
-        if ("body".equals(element.getTagName())) {
-            return null;
-        }
-        return element;
+    @FindBy(jquery = "*[type='text']:eq(1)")
+    public WebElement secondInput;
+
+    @FindBy(jquery = "*[value*='Form']")
+    public WebElement formSubmissionButton;
+
+    @FindBy(jquery = "*[value*='Ajax']")
+    public WebElement ajaxButton;
+
+    public void waitTillSecondInputIsFocused() {
+        waitModel().withMessage("Second input should be focused!").withTimeout(TestFocus.TIMEOUT_FOCUS, TimeUnit.SECONDS)
+            .until(new ElementIsFocused(secondInput));
     }
 }
