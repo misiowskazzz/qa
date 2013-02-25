@@ -45,7 +45,7 @@ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
                                buttonIcon="#{richCalendarBean.attributes['buttonIcon'].value}"
                                buttonLabel="#{richCalendarBean.attributes['buttonLabel'].value}"
                                converterMessage="#{richCalendarBean.attributes['converterMessage'].value}"
-                               currentDate="#{richCalendarBean.currentDate}"
+                               currentDate="#{richCalendarBean.attributes['currentDate'].value}"
                                datePattern="#{richCalendarBean.attributes['datePattern'].value}"
                                dayClassFunction="#{richCalendarBean.attributes['dayClassFunction'].value}"
                                dayDisableFunction="#{richCalendarBean.attributes['dayDisableFunction'].value}"
@@ -116,7 +116,7 @@ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
                                todayControlMode="#{richCalendarBean.attributes['todayControlMode'].value}"
                                validator="#{richCalendarBean.validateDate}"
                                validatorMessage="#{richCalendarBean.attributes['validatorMessage'].value}"
-                               value="#{richCalendarBean.value}"
+                               value="#{richCalendarBean.attributes['value'].value}"
                                valueChangeListener="#{richCalendarBean.valueChangeListener}"
                                verticalOffset="#{richCalendarBean.attributes['verticalOffset'].value}"
                                weekDayLabels="#{richCalendarBean.attributes['weekDayLabels'].value}"
@@ -133,14 +133,14 @@ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 
             <a4j:outputPanel id="outputPanel" ajaxRendered="true">
                 Output:
-                <h:outputText id="output" value="#{richCalendarBean.value}">
+                <h:outputText id="output" value="#{richCalendarBean.attributes['value'].value}">
                     <f:convertDateTime pattern="#{richCalendarBean.attributes['datePattern'].value}"
                                        timeZone="#{richCalendarBean.timeZone}"/>
                 </h:outputText>
                 <br/>
                 <br/>
                 Current date:  
-                <h:inputText id="currentDateInput" value="#{richCalendarBean.currentDate}">
+                <h:inputText id="currentDateInput" value="#{richCalendarBean.attributes['currentDate'].value}">
                     <f:convertDateTime pattern="#{richCalendarBean.attributes['datePattern'].value}"
                                        timeZone="#{richCalendarBean.timeZone}"/>
                 </h:inputText>
