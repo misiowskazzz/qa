@@ -45,7 +45,7 @@ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
                                buttonIcon="#{richCalendarBean.attributes['buttonIcon'].value}"
                                buttonLabel="#{richCalendarBean.attributes['buttonLabel'].value}"
                                converterMessage="#{richCalendarBean.attributes['converterMessage'].value}"
-                               currentDate="#{richCalendarBean.attributes['currentDate'].value}"
+                               currentDate="#{richCalendarBean.currentDate}"
                                datePattern="#{richCalendarBean.attributes['datePattern'].value}"
                                dayClassFunction="#{richCalendarBean.attributes['dayClassFunction'].value}"
                                dayDisableFunction="#{richCalendarBean.attributes['dayDisableFunction'].value}"
@@ -140,7 +140,7 @@ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
                 <br/>
                 <br/>
                 Current date:  
-                <h:inputText id="currentDateInput" value="#{richCalendarBean.attributes['currentDate'].value}">
+                <h:inputText id="currentDateInput" value="#{richCalendarBean.currentDate}">
                     <f:convertDateTime pattern="#{richCalendarBean.attributes['datePattern'].value}"
                                        timeZone="#{richCalendarBean.timeZone}"/>
                 </h:inputText>

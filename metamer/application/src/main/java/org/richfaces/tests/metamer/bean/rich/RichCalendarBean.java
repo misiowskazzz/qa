@@ -84,7 +84,7 @@ public class RichCalendarBean extends DateInputValidationBeanImpl implements Ser
 
         // TODO has to be tested in another way
         attributes.remove("converter");
-        attributes.remove("currentDate");
+        attributes.remove("currentDate");//value on page will cause convertExceptions
         attributes.remove("dataModel");
         attributes.remove("preloadDateRangeBegin");
         attributes.remove("preloadDateRangeEnd");
