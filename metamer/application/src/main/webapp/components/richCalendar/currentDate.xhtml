@@ -116,7 +116,7 @@ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
                                todayControlMode="#{richCalendarBean.attributes['todayControlMode'].value}"
                                validator="#{richCalendarBean.validateDate}"
                                validatorMessage="#{richCalendarBean.attributes['validatorMessage'].value}"
-                               value="#{richCalendarBean.attributes['value'].value}"
+                               value="#{richCalendarBean.value}"
                                valueChangeListener="#{richCalendarBean.valueChangeListener}"
                                verticalOffset="#{richCalendarBean.attributes['verticalOffset'].value}"
                                weekDayLabels="#{richCalendarBean.attributes['weekDayLabels'].value}"
@@ -133,7 +133,7 @@ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 
             <a4j:outputPanel id="outputPanel" ajaxRendered="true">
                 Output:
-                <h:outputText id="output" value="#{richCalendarBean.attributes['value'].value}">
+                <h:outputText id="output" value="#{richCalendarBean.value}">
                     <f:convertDateTime pattern="#{richCalendarBean.attributes['datePattern'].value}"
                                        timeZone="#{richCalendarBean.timeZone}"/>
                 </h:outputText>

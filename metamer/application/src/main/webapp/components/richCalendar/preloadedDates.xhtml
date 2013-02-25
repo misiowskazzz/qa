@@ -67,7 +67,7 @@ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
                                preloadDateRangeEnd="Feb 1, 2013"
                                datePattern="MMM d, yyyy"
                                currentDate="Jan 1, 2012"
-                               value="#{richCalendarBean.attributes['value'].value}" >
+                               value="#{richCalendarBean.value}" >
                     <a4j:ajax event="change" render="output, phasesPanel"/>
                 </rich:calendar>
             </div>
@@ -75,7 +75,7 @@ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
             <br/><br/>
 
             output:
-            <h:outputText id="output" value="#{richCalendarBean.attributes['value'].value}">
+            <h:outputText id="output" value="#{richCalendarBean.value}">
                 <f:convertDateTime pattern="MMM d, yyyy"
                                    timeZone="#{richCalendarBean.timeZone}"/>
             </h:outputText>

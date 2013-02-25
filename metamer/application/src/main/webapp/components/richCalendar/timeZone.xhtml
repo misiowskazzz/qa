@@ -45,7 +45,7 @@ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
                                popup="true"
                                datePattern="#{richCalendarBean.attributes['datePattern'].value}"
                                timeZone="#{richCalendarBean.tz}"
-                               value="#{richCalendarBean.attributes['value'].value}">
+                               value="#{richCalendarBean.value}">
                     <a4j:ajax event="change" render="outputPanel, phasesPanel" />
                 </rich:calendar>
                 <rich:message id="msg" for="calendar"/>

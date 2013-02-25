@@ -58,6 +58,7 @@ public class RichCalendarBean extends DateInputValidationBeanImpl implements Ser
     public static final TimeZone TIME_ZONE = TimeZone.getTimeZone("UTC");
     private TimeZone tz = TimeZone.getTimeZone("GMT");
     private Date currentDate;
+    private Date value;
 
     /**
      * Initializes the managed bean.
@@ -88,6 +89,7 @@ public class RichCalendarBean extends DateInputValidationBeanImpl implements Ser
         attributes.remove("preloadDateRangeBegin");
         attributes.remove("preloadDateRangeEnd");
         attributes.remove("validator");
+        attributes.remove("value");//value on page will cause convertExceptions
         attributes.remove("valueChangeListener");
         attributes.remove("timeZone");
     }
@@ -100,6 +102,10 @@ public class RichCalendarBean extends DateInputValidationBeanImpl implements Ser
         return tz;
     }
 
+    public void setValue(Date value) {
+        this.value = value;
+    }
+
     public void setTz(TimeZone tz) {
         this.tz = tz;
     }
@@ -110,6 +116,10 @@ public class RichCalendarBean extends DateInputValidationBeanImpl implements Ser
 
     public void setCurrentDate(Date currentDate) {
         this.currentDate = currentDate;
+    }
+
+    public Date getValue() {
+        return value;
     }
 
     /**
