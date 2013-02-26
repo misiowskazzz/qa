@@ -51,6 +51,7 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.richfaces.tests.page.fragments.impl.WebElementProxyUtils;
 
@@ -240,7 +241,7 @@ public class MetamerPage {
     private static class RequestTimeChangesWaitingInterceptor implements Interceptor {
 
         protected String time1;
-        private static final WebElement requestTime = WebElementProxyUtils
+        private final WebElement requestTime = WebElementProxyUtils
                 .createProxyForElement(By.cssSelector("span[id='requestTime']"));
 
         protected void afterAction() {
@@ -252,6 +253,7 @@ public class MetamerPage {
         }
 
         protected String getTime() {
+            Graphene.waitModel().until(ExpectedConditions.visibilityOf(requestTime));
             String time = requestTime.getText();
             return time;
         }

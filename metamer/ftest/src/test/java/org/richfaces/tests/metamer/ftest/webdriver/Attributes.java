@@ -33,6 +33,7 @@ import org.jboss.test.selenium.support.ui.ElementPresent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.richfaces.tests.metamer.ftest.attributes.AttributeEnum;
 import org.richfaces.tests.metamer.ftest.webdriver.MetamerPage.WaitRequestType;
@@ -120,7 +121,7 @@ public class Attributes<T extends AttributeEnum> {
         WebElement foundElementProxy = WebElementProxyUtils.createProxyForElement(
                 getCssSelectorForProperty(propertyName));
         //handle the property by the tagname of the input element
-        Graphene.waitAjax().until(ElementPresent.getInstance().element(foundElementProxy));
+        Graphene.waitModel().until(ExpectedConditions.visibilityOf(foundElementProxy));
         Tag tag = Tag.getTag(foundElementProxy);
         switch (tag) {
             case input:
@@ -149,6 +150,7 @@ public class Attributes<T extends AttributeEnum> {
     private void applyText(String propertyName, String value) {
         WebElement input = WebElementProxyUtils.createProxyForElement(
                 getCssSelectorForProperty(propertyName));
+        Graphene.waitModel().until(ExpectedConditions.visibilityOf(input));
         String text = input.getAttribute("value");
         if (!value.equals(text)) {
             if (!text.isEmpty()) {
@@ -230,6 +232,7 @@ public class Attributes<T extends AttributeEnum> {
     private String getProperty(String propertyName) {
         WebElement foundElementProxy = WebElementProxyUtils.createProxyForElement(
                 getCssSelectorForProperty(propertyName));
+        Graphene.waitModel().until(ExpectedConditions.visibilityOf(foundElementProxy));
         //handle the property by the tagname of the input element
         Tag tag = Tag.getTag(foundElementProxy);
         switch (tag) {
